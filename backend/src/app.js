@@ -17,4 +17,7 @@ app.use(cookieParser());
 // db connection
 initializeDatabase();
 
+app.use("/auth", require("./routes/auth.routes"));
+app.use("/user", require("./routes/user.routes"));
+
 module.exports = app;
