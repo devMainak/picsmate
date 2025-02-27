@@ -45,6 +45,10 @@ exports.updateAlbum = async (req, res) => {
   }
 };
 
+// exports.shareAlbum = async (req, res) => {
+//   try 
+// }
+
 exports.deleteAlbum = async (req, res) => {
   try {
     const { id } = req.params;
