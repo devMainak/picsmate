@@ -14,6 +14,62 @@ cloudinary.config({
 const storage = multer.diskStorage({});
 export const upload = multer({ storage });
 
+exports.getImagesInAlbum = async (req, res) => {
+  const { albumId } = req.params;
+  try {
+    const images = await Image.find({ albumId });
+    if (!images.length) {
+      res.status(404).json({ message: "No image found." });
+    } else {
+      res.status(200).json({ message: "Images fetched successfully.", images });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to fetch images." });
+  }
+};
+
+exports.getFavoriteImages = async (req, res) => {
+  const { albumId } = req.params;
+  try {
+    const favouriteImages = await Image.find({ albumId, isFavorite: true });
+    if (!favouriteImages.length) {
+      res
+        .status(404)
+        .json({ message: "No favourite images found in the album." });
+    } else {
+      res.status(200).json({
+        message: "Favourite images fetched from the album.",
+        favouriteImages,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to load favourite images" });
+  }
+};
+
+exports.getImagesByTag = async (req, res) => {
+  try {
+    const { albumId } = req.params;
+    const { tags } = req.query;
+
+    const tagFilter = tags ? { tags: { $in: tags.split(",") } } : {};
+
+    const images = await Image.find({ albumId, ...tagFilter });
+    if (!images.length) {
+      res.status(404).json({ message: "Failed to load images with tags." });
+    } else {
+      res
+        .status(200)
+        .json({ message: "Images with the following tags fetched.", images });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to load images with tags." });
+  }
+};
+
 exports.uploadImage = async (req, res) => {
   const { imageData } = req.body;
 
@@ -58,5 +114,65 @@ exports.uploadImage = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Image upload failed", error });
+  }
+};
+
+exports.favouriteImage = async (req, res) => {
+  const { imageId } = req.params;
+
+  try {
+    const { isFavorite } = req.body;
+    const updatedImage = await Image.findByIdAndUpdate(imageId, { isFavorite });
+    if (!updatedImage) {
+      res.status(400).json({ message: "Failed to add image as favourite" });
+    } else {
+      res
+        .status(200)
+        .json({ message: "Image added as favourite", updatedImage });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to add image as favourite." });
+  }
+};
+
+exports.addComment = async (req, res) => {
+  const { imageId } = req.params;
+  try {
+    const { comment } = req.body;
+    const updatedImage = await Image.findByIdAndUpdate(
+      imageId,
+      {
+        $addToSet: { comments: comment },
+      },
+      { new: true }
+    );
+
+    if (!updatedImage) {
+      res.status(400).json({ message: "Failed to add comment for image." });
+    } else {
+      res
+        .status(201)
+        .json({ message: "Added comment for image.", updatedImage });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to add comment for image." });
+  }
+};
+
+exports.deleteImage = async (req, res) => {
+  const { imageId } = req.params;
+
+  try {
+    const deletedImage = await Image.findByIdAndDelete(imageId);
+    if (!deletedImage) {
+      res.status(400).json({ message: "Failed to delete image." });
+    } else {
+      res.status(200).json({ message: "Image deleted.", deletedImage });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to delete image." });
   }
 };

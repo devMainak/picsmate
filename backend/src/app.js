@@ -20,5 +20,6 @@ initializeDatabase();
 app.use("/auth", require("./routes/auth.routes"));
 app.use("/user", require("./routes/user.routes"));
 app.use("/albums", require("./routes/album.routes"));
+app.use("/albums/:albumId/images", require("./controller/image.controller"));
 
 module.exports = app;

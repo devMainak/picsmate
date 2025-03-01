@@ -15,7 +15,7 @@ const albumSchema = new mongoose.Schema(
     description: {
       type: String,
     },
-    emails: [
+    accessList: [
       {
         type: String,
       },
