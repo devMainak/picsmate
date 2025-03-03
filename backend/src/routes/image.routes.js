@@ -1,9 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const authenticate = require("../middlewares/auth.middleware");
+const multer = require("multer");
 const {
   uploadImage,
-  upload,
   getImagesInAlbum,
   getFavoriteImages,
   getImagesByTag,
@@ -11,13 +10,20 @@ const {
   favouriteImage,
   deleteImage,
 } = require("../controller/image.controller");
+const authenticate = require("../middlewares/auth.middleware");
 
-router.get("/", authenticate, getImagesInAlbum);
-router.get("/favourites", authenticate, getFavoriteImages);
-router.get("/tags", authenticate, getImagesByTag);
-router.post("/", authenticate, upload.single("image"), uploadImage);
-router.put("/:imageId/favourite", authenticate, favouriteImage);
-router.post("/:imageId/comments", authenticate, addComment);
-router.delete("/:imageId", authenticate, deleteImage);
+// multer
+const storage = multer.diskStorage({});
+const multerUpload = multer({ storage });
+
+router.use(authenticate);
+
+router.get("/", getImagesInAlbum);
+router.get("/favourites", getFavoriteImages);
+router.get("/tags", getImagesByTag);
+router.post("/", multerUpload.single("image"), uploadImage);
+router.put("/:imageId/favourite", favouriteImage);
+router.post("/:imageId/comments", addComment);
+router.delete("/:imageId", deleteImage);
 
 module.exports = router;

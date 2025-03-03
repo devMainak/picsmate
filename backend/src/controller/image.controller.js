@@ -1,7 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 const Image = require("../models/image.model");
-const multer = require("multer");
 const cloudinary = require("cloudinary");
 
 cloudinary.config({
@@ -9,10 +8,6 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-
-// multer
-const storage = multer.diskStorage({});
-export const upload = multer({ storage });
 
 exports.getImagesInAlbum = async (req, res) => {
   const { albumId } = req.params;

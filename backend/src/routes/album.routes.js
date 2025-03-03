@@ -9,11 +9,12 @@ const {
 } = require("../controller/album.controller");
 const authenticate = require("../middlewares/auth.middleware");
 
+router.use(authenticate);
 
-router.get("/", authenticate, getAlbums);
-router.post("/", authenticate, createAlbum);
-router.put("/:albumId", authenticate, updateAlbum);
-router.post("/:albumId/share", authenticate, shareAlbum)
-router.delete("/:albumId", authenticate, deleteAlbum);
+router.get("/", getAlbums);
+router.post("/", createAlbum);
+router.put("/:albumId", updateAlbum);
+router.post("/:albumId/share", shareAlbum);
+router.delete("/:albumId", deleteAlbum);
 
 module.exports = router;
