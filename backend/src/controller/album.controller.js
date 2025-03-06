@@ -3,7 +3,10 @@ const User = require("../models/user.model");
 
 exports.getAlbums = async (req, res) => {
   try {
-    const albums = await Album.find();
+    const user = req.user;
+    const albums = await Album.find({
+      $or: [{ owner: user._id }, { accessList: user.email }],
+    });
     if (albums.length > 0) {
       res.status(200).json({ message: "Albums fetched successfully.", albums });
     } else {
