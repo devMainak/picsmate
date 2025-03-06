@@ -1,8 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Login from "./pages/LoginPage";
-import Profile from "./pages/Profile";
+import Photos from "./pages/PhotoView";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import SidebarLayout from "./components/sidebar/SidebarLayout";
 
 function App() {
   return (
@@ -10,9 +11,10 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Login />} />
-          {/* <Route path="/dashboard" element={<Dashboard />} /> */}
           <Route element={<ProtectedRoute />}>
-            <Route path="/profile" element={<Profile />} />
+            <Route element={<SidebarLayout />}>
+              <Route path="/photos" element={<Photos />} />
+            </Route>
           </Route>
         </Routes>
       </Router>

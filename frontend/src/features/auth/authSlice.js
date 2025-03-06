@@ -3,47 +3,65 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const googleLoginAsync = createAsyncThunk(
   "auth/google",
-  async ({ rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      window.location.href = `${import.meta.env.WEB_SERVER_URL}/auth/google`;
+      window.location.href = `${
+        import.meta.env.VITE_WEB_SERVER_BASE_URL
+      }/auth/google`;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(
+        error?.response?.data?.message || "An error occurred"
+      );
     }
   }
 );
 
 export const loginAsync = createAsyncThunk(
   "auth/login",
-  async (userdata, { rejectWithValue }) => {
+  async (credentials, { rejectWithValue }) => {
     try {
-      const response = await webServerAxios.post("/auth/login", userdata);
+      const response = await webServerAxios.post("/auth/login", credentials);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Login Failed");
+      return rejectWithValue(error.response?.data.message || "Login Failed");
     }
   }
 );
 
 export const fetchUserAsync = createAsyncThunk(
   "fetch/user",
-  async ({ rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const response = await webServerAxios.get("/user/profile");
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Failed to fetch user.");
+      return rejectWithValue(
+        error.response?.data.message || "Failed to fetch user."
+      );
     }
   }
 );
 
 export const verifyAuthAsync = createAsyncThunk(
   "auth/verify",
-  async ({ rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const response = await webServerAxios.get("/auth/verify");
       return response.data;
     } catch (error) {
-      rejectWithValue(error.response?.data || "Unauthorized Access.");
+      rejectWithValue(error.response?.data.message || "Unauthorized Access.");
+    }
+  }
+);
+
+export const logoutAsync = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await webServerAxios.post("/auth/logout");
+      return response.data;
+    } catch (error) {
+      rejectWithValue(error.reponse?.data.message || "Failed to logout user");
     }
   }
 );
@@ -79,6 +97,13 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.user = null;
       state.error = action.payload.error?.message || "Unauthorized Access";
+    });
+    builder.addCase(fetchUserAsync.fulfilled, (state, action) => {
+      state.user = action.payload.user;
+    });
+    builder.addCase(logoutAsync.fulfilled, (state) => {
+      state.isAuthenticated = false;
+      state.user = null;
     });
   },
 });

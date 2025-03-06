@@ -1,4 +1,10 @@
-import { loginAsync, logoutAsync } from "@/features/auth/authSlice";
+import {
+  fetchUserAsync,
+  googleLoginAsync,
+  loginAsync,
+  logoutAsync,
+  verifyAuthAsync,
+} from "@/features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 export const useAuth = () => {
@@ -12,8 +18,20 @@ export const useAuth = () => {
     dispatch(loginAsync(credentials));
   };
 
+  const loginWithGoogle = () => {
+    dispatch(googleLoginAsync());
+  };
+
   const logout = () => {
     dispatch(logoutAsync());
+  };
+
+  const verifyAuth = () => {
+    dispatch(verifyAuthAsync());
+  };
+
+  const fetchUserDetails = () => {
+    dispatch(fetchUserAsync());
   };
 
   return {
@@ -22,6 +40,9 @@ export const useAuth = () => {
     loading,
     error,
     login,
+    loginWithGoogle,
     logout,
+    verifyAuth,
+    fetchUserDetails,
   };
 };

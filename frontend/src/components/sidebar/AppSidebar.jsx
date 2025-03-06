@@ -1,12 +1,4 @@
-import {
-  Calendar,
-  Home,
-  Album,
-  Search,
-  Settings,
-  Star,
-  ImageIcon,
-} from "lucide-react";
+import { Album, Search, Settings, Star, ImageIcon, Image } from "lucide-react";
 
 import {
   Sidebar,
@@ -21,22 +13,18 @@ import {
   SidebarFooter,
 } from "@/components/ui/sidebar";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { NavUser } from "./NavUser";
-
-const user = {
-  name: "John Doe",
-  email: "example@email.com",
-  avatar: "https://randomuser.me/api/portraits/men/45.jpg", // Replace with actual user avatar
-};
+import { useEffect, useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { Skeleton } from "../ui/skeleton";
+import { SidebarSkeleton } from "./SidebarSkeleton";
 
 // Menu items.
 const items = [
   {
-    title: "Home",
+    title: "Photos",
     url: "#",
-    icon: Home,
+    icon: Image,
   },
   {
     title: "Albums",
@@ -61,8 +49,14 @@ const items = [
 ];
 
 export function AppSidebar() {
+  const { user, fetchUserDetails } = useAuth();
+
+  useEffect(() => {
+    fetchUserDetails();
+  }, []);
+
   return (
-    <Sidebar>
+    <Sidebar className="top-[--header-height] !h-[calc(100svh-var(--header-height))]">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -104,7 +98,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="p-3 border-t">
-        <NavUser user={user} />
+        {user ? <NavUser user={user} /> : <SidebarSkeleton />}
       </SidebarFooter>
     </Sidebar>
   );

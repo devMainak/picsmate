@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export const webServerAxios = axios.create({
-  baseURL: `${import.meta.env.WEB_SERVER_URL}`,
+  baseURL: `${import.meta.env.VITE_WEB_SERVER_BASE_URL}`,
   withCredentials: true,
 });

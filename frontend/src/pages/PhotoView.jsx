@@ -3,7 +3,7 @@ import axios from "axios";
 import { AppSidebar } from "@/components/sidebar/AppSidebar";
 import SidebarLayout from "@/components/sidebar/SidebarLayout";
 
-const Profile = () => {
+const PhotoView = () => {
   // useEffect(() => {
   //   const fetchUserDetails = async () => {
   //     try {
@@ -20,9 +20,11 @@ const Profile = () => {
 
   return (
     <div>
-      <SidebarLayout />
+      <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+        Photos
+      </h3>
     </div>
   );
 };
 
-export default Profile;
+export default PhotoView;

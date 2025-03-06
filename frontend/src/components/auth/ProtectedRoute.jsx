@@ -1,21 +1,12 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axiosInstance from "@/utilities/axiosInstance";
+import { useEffect } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 const ProtectedRoute = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const { isAuthenticated, verifyAuth } = useAuth();
 
   useEffect(() => {
-    const verifyToken = async () => {
-      try {
-        await axiosInstance.get("/auth/verify");
-        setIsAuthenticated(true);
-      } catch (error) {
-        setIsAuthenticated(false);
-      }
-    };
-
-    verifyToken();
+    verifyAuth();
   }, []);
 
   if (isAuthenticated === null) {
@@ -26,7 +17,7 @@ const ProtectedRoute = () => {
     );
   }
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/" replace />;
+  return isAuthenticated ? <Outlet /> : <Navigate to="/profile" replace />;
 };
 
 export default ProtectedRoute;

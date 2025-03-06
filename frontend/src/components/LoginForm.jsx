@@ -3,18 +3,21 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useAuth } from "@/hooks/useAuth";
 
 export function LoginForm({ className, ...props }) {
+  const { loginWithGoogle } = useAuth();
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <div className="p-6 md:p-8">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
                 <p className="text-balance text-muted-foreground">
-                  Login to your Picsmate account
+                  Login to your picsmate account
                 </p>
               </div>
               <div className="grid gap-2">
@@ -23,10 +26,12 @@ export function LoginForm({ className, ...props }) {
                   id="email"
                   type="email"
                   placeholder="email@example.com"
-                  required
                 />
               </div>
-              <Button type="submit" className="w-full">
+              <Button
+                // type="submit"
+                className="w-full bg-zinc-950 dark:bg-white"
+              >
                 Login
               </Button>
               <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
@@ -38,6 +43,7 @@ export function LoginForm({ className, ...props }) {
                 <Button
                   variant="outline"
                   className="w-full flex items-center justify-center gap-2"
+                  onClick={() => loginWithGoogle()}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +65,7 @@ export function LoginForm({ className, ...props }) {
                 </a>
               </div>
             </div>
-          </form>
+          </div>
           <div className="relative hidden bg-muted md:block">
             <img
               src="https://i.pinimg.com/736x/55/51/44/555144d07ae06ae14e9218783711ce4f.jpg"
