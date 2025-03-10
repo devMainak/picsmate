@@ -71,6 +71,22 @@ export const shareAlbumAsync = createAsyncThunk(
   }
 );
 
+export const deleteAlbumAsync = createAsyncThunk(
+  "album/delete",
+  async (albumId, { rejectWithValue }) => {
+    try {
+      const response = await webServerAxios.delete(`/albums/${albumId}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response.data?.message ||
+          error.message ||
+          "Failed to delete album."
+      );
+    }
+  }
+);
+
 const albumsSlice = createSlice({
   name: "albums",
   initialState: {
@@ -80,6 +96,7 @@ const albumsSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
+    // fetchAlbumAsync promise cases
     builder.addCase(fetchAlbumsAsync.pending, (state) => {
       state.loading = true;
     });
@@ -91,15 +108,18 @@ const albumsSlice = createSlice({
       state.loading = false;
       state.error = action.payload.message || "Failed to fetch albums";
     });
+    // createAlbumAsync promise cases
     builder.addCase(createAlbumAsync.fulfilled, (state, action) => {
       state.albums.push(action.payload.album);
     });
+    // updateAlbumAsync promise cases
     builder.addCase(updateAlbumAsync.fulfilled, (state, action) => {
       const { updatedAlbum } = action.payload;
       state.albums = state.albums.map((album) =>
         album._id === updatedAlbum._id ? updatedAlbum : album
       );
     });
+    // shareAlbumAsync promise cases
     builder.addCase(shareAlbumAsync.fulfilled, (state, action) => {
       const { updatedAlbum } = action.payload;
       state.albums = state.albums.map((album) =>
