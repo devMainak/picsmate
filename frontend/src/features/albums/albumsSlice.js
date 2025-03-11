@@ -102,7 +102,8 @@ const albumsSlice = createSlice({
     });
     builder.addCase(fetchAlbumsAsync.fulfilled, (state, action) => {
       state.loading = false;
-      action.albums = action.payload.albums;
+      state.albums =
+        action.payload.albums.length === 0 ? [] : action.payload.albums;
     });
     builder.addCase(fetchAlbumsAsync.rejected, (state, action) => {
       state.loading = false;

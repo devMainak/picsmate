@@ -15,6 +15,7 @@ import {
 
 import { NavUser } from "./NavUser";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Skeleton } from "../ui/skeleton";
 import { SidebarSkeleton } from "./SidebarSkeleton";
@@ -23,12 +24,12 @@ import { SidebarSkeleton } from "./SidebarSkeleton";
 const items = [
   {
     title: "Photos",
-    url: "#",
+    url: "/photos",
     icon: Image,
   },
   {
     title: "Albums",
-    url: "#",
+    url: "/albums",
     icon: Album,
   },
   {
@@ -61,7 +62,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="#">
+              <Link to="/photos">
                 <div className="flex items-center gap-2">
                   {/* ✅ Add Picture-in-Picture icon here */}
                   <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
@@ -73,7 +74,7 @@ export function AppSidebar() {
                     <span className="font-semibold">picsmate.</span>
                   </div>
                 </div>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -86,10 +87,10 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
