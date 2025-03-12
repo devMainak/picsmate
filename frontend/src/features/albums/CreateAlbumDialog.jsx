@@ -49,7 +49,7 @@ export function CreateAlbumDialog() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" onClick={() => setIsOpen(true)}>
+        <Button onClick={() => setIsOpen(true)}>
           + Create Album
         </Button>
       </DialogTrigger>
