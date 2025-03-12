@@ -1,16 +1,13 @@
+import AlbumLink from "./AlbumLink";
+
 const AlbumList = ({ albums }) => {
   return (
     <div>
       {albums.length ? (
         <div className="grid grid-cols-4 gap-4">
-          {albums.map((album) => {
-            return (
-              <div className="py-[5px]">
-                <img src={album.coverImage} />
-                <p className="text-left">{album.title}</p>
-              </div>
-            );
-          })}
+          {albums.map((album) => (
+            <AlbumLink album={album} />
+          ))}
         </div>
       ) : (
         <div>No albums.</div>
