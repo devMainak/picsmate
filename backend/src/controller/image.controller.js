@@ -90,7 +90,7 @@ exports.uploadImage = async (req, res) => {
       fs.unlinkSync(filePath);
       return res.status(400).json({ message: "File size exceeds 5MB limit" });
     }
-
+    const sizeInMb = (fileSize / (1024 * 1024)).toFixed(2);
     const cloudinaryResponse = await cloudinary.uploader.upload(filePath, {
       folder: "uploads",
     });
@@ -99,6 +99,7 @@ exports.uploadImage = async (req, res) => {
 
     const newImage = new Image({
       ...imageData,
+      size: sizeInMb,
       imageUrl: cloudinaryResponse.secure_url,
     });
     const savedImage = await newImage.save();
