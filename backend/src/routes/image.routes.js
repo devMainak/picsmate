@@ -3,12 +3,12 @@ const router = express.Router();
 const multer = require("multer");
 const {
   uploadImage,
-  getImagesInAlbum,
   getFavoriteImages,
   getImagesByTag,
   addComment,
   favouriteImage,
   deleteImage,
+  getAllImages,
 } = require("../controller/image.controller");
 const authenticate = require("../middlewares/auth.middleware");
 
@@ -18,7 +18,7 @@ const multerUpload = multer({ storage });
 
 router.use(authenticate);
 
-router.get("/", getImagesInAlbum);
+router.get("/", getAllImages);
 router.get("/favourites", getFavoriteImages);
 router.get("/tags", getImagesByTag);
 router.post("/", multerUpload.single("image"), uploadImage);

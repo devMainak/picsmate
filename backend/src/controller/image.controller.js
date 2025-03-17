@@ -9,20 +9,20 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-exports.getImagesInAlbum = async (req, res) => {
-  const { albumId } = req.params;
+exports.getAllImages = async (req, res) => {
   try {
-    const images = await Image.find({ albumId });
+    const images = await Image.find();
     if (!images.length) {
-      res.status(404).json({ message: "No image found." });
+      res.status(404).json({ message: "No images found." });
     } else {
-      res.status(200).json({ message: "Images fetched successfully.", images });
+      res.status(200).json({ message: "Images fetched successfully", images });
     }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to fetch images." });
   }
 };
+
 
 exports.getFavoriteImages = async (req, res) => {
   const { albumId } = req.params;
@@ -118,7 +118,9 @@ exports.favouriteImage = async (req, res) => {
 
   try {
     const { isFavorite } = req.body;
-    const updatedImage = await Image.findByIdAndUpdate(imageId, { isFavorite });
+    const updatedImage = await Image.findByIdAndUpdate(imageId, {
+      isFavorite: isFavorite ? false : true,
+    });
     if (!updatedImage) {
       res.status(400).json({ message: "Failed to add image as favourite" });
     } else {
