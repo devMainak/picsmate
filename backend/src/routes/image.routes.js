@@ -13,7 +13,11 @@ const {
 const authenticate = require("../middlewares/auth.middleware");
 
 // multer
-const storage = multer.diskStorage({});
+const storage = multer.diskStorage({
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
 const multerUpload = multer({ storage });
 
 router.use(authenticate);
@@ -21,7 +25,7 @@ router.use(authenticate);
 router.get("/", getAllImages);
 router.get("/favourites", getFavoriteImages);
 router.get("/tags", getImagesByTag);
-router.post("/", multerUpload.single("image"), uploadImage);
+router.post("/", multerUpload.single("file"), uploadImage);
 router.put("/:imageId/favourite", favouriteImage);
 router.post("/:imageId/comments", addComment);
 router.delete("/:imageId", deleteImage);

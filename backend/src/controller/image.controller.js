@@ -23,7 +23,6 @@ exports.getAllImages = async (req, res) => {
   }
 };
 
-
 exports.getFavoriteImages = async (req, res) => {
   const { albumId } = req.params;
   try {
@@ -66,9 +65,11 @@ exports.getImagesByTag = async (req, res) => {
 };
 
 exports.uploadImage = async (req, res) => {
-  const { imageData } = req.body;
-
   try {
+    const { imageData } = req.body;
+
+    const parsedImageData = imageData ? JSON.parse(imageData) : {};
+
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded." });
     }
@@ -76,9 +77,10 @@ exports.uploadImage = async (req, res) => {
     const filePath = req.file.path;
     const fileSize = fs.statSync(filePath).size;
     const fileExt = path.extname(filePath).toLowerCase();
+    console.log(filePath);
+    console.log(fileExt);
 
     const allowedExtentions = [".jpg", ".jpeg", ".png", ".gif"];
-
     if (!allowedExtentions.includes(fileExt)) {
       fs.unlinkSync(filePath);
       return res.status(400).json({
@@ -98,10 +100,11 @@ exports.uploadImage = async (req, res) => {
     fs.unlinkSync(filePath);
 
     const newImage = new Image({
-      ...imageData,
+      ...parsedImageData,
       size: sizeInMb,
       imageUrl: cloudinaryResponse.secure_url,
     });
+
     const savedImage = await newImage.save();
 
     res
