@@ -77,8 +77,6 @@ exports.uploadImage = async (req, res) => {
     const filePath = req.file.path;
     const fileSize = fs.statSync(filePath).size;
     const fileExt = path.extname(filePath).toLowerCase();
-    console.log(filePath);
-    console.log(fileExt);
 
     const allowedExtentions = [".jpg", ".jpeg", ".png", ".gif"];
     if (!allowedExtentions.includes(fileExt)) {
