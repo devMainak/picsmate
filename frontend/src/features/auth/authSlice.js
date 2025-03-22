@@ -23,7 +23,7 @@ export const loginAsync = createAsyncThunk(
       const response = await webServerAxios.post("/auth/login", credentials);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data.message || "Login Failed");
+      return rejectWithValue(error.response?.data?.message || "Login Failed");
     }
   }
 );
@@ -36,7 +36,7 @@ export const fetchUserAsync = createAsyncThunk(
       return response.data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data.message || "Failed to fetch user."
+        error.response?.data?.message || "Failed to fetch user."
       );
     }
   }
@@ -49,7 +49,9 @@ export const verifyAuthAsync = createAsyncThunk(
       const response = await webServerAxios.get("/auth/verify");
       return response.data;
     } catch (error) {
-      rejectWithValue(error.response?.data.message || "Unauthorized Access.");
+      return rejectWithValue(
+        error.response?.data?.message || "Unauthorized Access."
+      );
     }
   }
 );
@@ -61,7 +63,9 @@ export const logoutAsync = createAsyncThunk(
       const response = await webServerAxios.post("/auth/logout");
       return response.data;
     } catch (error) {
-      rejectWithValue(error.reponse?.data.message || "Failed to logout user");
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to logout user"
+      );
     }
   }
 );
@@ -78,6 +82,7 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(loginAsync.pending, (state) => {
       state.loading = true;
+      state.error = null;
     });
     builder.addCase(loginAsync.fulfilled, (state, action) => {
       state.loading = false;
@@ -87,23 +92,38 @@ const authSlice = createSlice({
     builder.addCase(loginAsync.rejected, (state, action) => {
       state.loading = false;
       state.isAuthenticated = false;
-      state.error = action.payload.error?.message || "Failed to login user";
+      state.error = action.payload || "Failed to login user";
+    });
+
+    builder.addCase(verifyAuthAsync.pending, (state) => {
+      state.loading = true;
     });
     builder.addCase(verifyAuthAsync.fulfilled, (state, action) => {
+      state.loading = false;
       state.isAuthenticated = true;
-      state.user = action.payload.user;
     });
     builder.addCase(verifyAuthAsync.rejected, (state, action) => {
+      state.loading = false;
       state.isAuthenticated = false;
       state.user = null;
-      state.error = action.payload.error?.message || "Unauthorized Access";
+      state.error = action.payload || "Unauthorized Access";
     });
+
     builder.addCase(fetchUserAsync.fulfilled, (state, action) => {
       state.user = action.payload.user;
     });
+
+    builder.addCase(logoutAsync.pending, (state) => {
+      state.loading = true;
+    });
     builder.addCase(logoutAsync.fulfilled, (state) => {
+      state.loading = false;
       state.isAuthenticated = false;
       state.user = null;
+    });
+    builder.addCase(logoutAsync.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload || "Failed to logout user";
     });
   },
 });
