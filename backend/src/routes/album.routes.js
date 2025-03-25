@@ -11,7 +11,7 @@ const authenticate = require("../middlewares/auth.middleware");
 
 router.use(authenticate);
 
-router.get("/", getAlbums);
+router.get("/:userId", getAlbums);
 router.post("/", createAlbum);
 router.put("/:albumId", updateAlbum);
 router.post("/:albumId/share", shareAlbum);

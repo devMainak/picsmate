@@ -3,7 +3,8 @@ const User = require("../models/user.model");
 
 exports.getAlbums = async (req, res) => {
   try {
-    const user = req.user;
+    const { userId } = req.params;
+    const user = await User.findById(userId);
     const albums = await Album.find({
       $or: [{ owner: user._id }, { accessList: user.email }],
     });
