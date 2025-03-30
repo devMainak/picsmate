@@ -49,7 +49,7 @@ export const uploadImageAsync = createAsyncThunk(
       return rejectWithValue(
         error.response.data?.message ||
           error.message ||
-          "Failed to create image."
+          "Failed to upload image."
       );
     }
   }
@@ -119,7 +119,11 @@ const imagesSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    clearError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     // fetchAlbumAsync promise cases
     builder.addCase(fetchImagesAsync.pending, (state) => {
@@ -131,11 +135,14 @@ const imagesSlice = createSlice({
     });
     builder.addCase(fetchImagesAsync.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.payload.message || "Failed to fetch albums";
+      state.error = action.payload.message || "Failed to fetch images";
     });
     // uploadImage promise cases
     builder.addCase(uploadImageAsync.fulfilled, (state, action) => {
       state.images.push(action.payload.savedImage);
+    });
+    builder.addCase(uploadImageAsync.rejected, (state, action) => {
+      state.error = action.payload;
     });
     // addFavouriteImageAsync promise cases
     builder.addCase(addFavouriteImageAsync.fulfilled, (state, action) => {
@@ -160,5 +167,7 @@ const imagesSlice = createSlice({
     });
   },
 });
+
+export const { clearError } = imagesSlice.actions;
 
 export default imagesSlice.reducer;
