@@ -4,7 +4,7 @@ const AlbumList = ({ albums }) => {
   return (
     <div>
       {albums.length ? (
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-6 gap-2">
           {albums.map((album) => (
             <AlbumLink album={album} />
           ))}

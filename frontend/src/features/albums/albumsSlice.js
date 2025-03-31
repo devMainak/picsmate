@@ -3,9 +3,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchAlbumsAsync = createAsyncThunk(
   "fetch/albums",
-  async (_, { rejectWithValue }) => {
+  async (user, { rejectWithValue }) => {
     try {
-      const response = await webServerAxios.get("/albums");
+      const response = await webServerAxios.get(`/albums/${user._id}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(

@@ -2,21 +2,16 @@ import { useEffect } from "react";
 import axios from "axios";
 import { AppSidebar } from "@/components/sidebar/AppSidebar";
 import SidebarLayout from "@/components/sidebar/SidebarLayout";
+import { useDispatch } from "react-redux";
+import { fetchImagesAsync } from "@/features/images/imagesSlice";
 
 const PhotoView = () => {
-  // useEffect(() => {
-  //   const fetchUserDetails = async () => {
-  //     try {
-  //       const response = await axios.get("http://localhost:4000/user/profile", {
-  //         withCredentials: true,
-  //       });
+  const dispatch = useDispatch();
 
-  //       console.log(response.data);
-  //     } catch (error) {}
-  //   };
+  useEffect(() => {
+    dispatch(fetchImagesAsync());
+  }, []);
 
-  //   fetchUserDetails()
-  // });
 
   return (
     <div>

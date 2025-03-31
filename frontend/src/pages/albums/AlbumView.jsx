@@ -1,14 +1,17 @@
 import AlbumList from "@/features/albums/AlbumList";
 import { fetchAlbumsAsync } from "@/features/albums/albumsSlice";
 import { CreateAlbumDialog } from "@/features/albums/CreateAlbumDialog";
+import { useAuth } from "@/hooks/useAuth";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const AlbumView = () => {
   const dispatch = useDispatch();
 
+  const { user } = useAuth();
+  console.log(user);
   useEffect(() => {
-    dispatch(fetchAlbumsAsync());
+    dispatch(fetchAlbumsAsync(user));
   }, []);
 
   const { albums, loading, error } = useSelector((state) => state.albums);
