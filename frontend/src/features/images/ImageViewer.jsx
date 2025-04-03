@@ -2,41 +2,65 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Heart, Trash, Info, ArrowLeft } from "lucide-react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { addCommentAsync } from "./imagesSlice";
 
 export default function ImageViewer() {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const image = location.state;
+  const { user } = useSelector((state) => state.auth);
+  const { images } = useSelector((state) => state.images);
+  const currentImage = images.find((pic) => pic._id === image._id);
 
   const handleCommentSubmit = () => {
-    if (comment.trim()) {
-      setComments([...comments, comment]);
-      setComment("");
+    if (comment) {
+      const newComment = {
+        owner: {
+          name: user.name,
+          profilePic: user.profilePicture,
+        },
+        comment,
+      };
+      dispatch(
+        addCommentAsync({
+          albumId: currentImage.albumId._id,
+          comment: newComment,
+          imageId: currentImage._id,
+        })
+      );
     }
   };
 
   const handleClickOutside = (event) => {
-    if (isSidebarOpen && !event.target.closest(".sidebar")) {
+    if (
+      isSidebarOpen &&
+      !event.target.closest(".sidebar") &&
+      !event.target.closest(".comment-input") &&
+      !event.target.closest(".post-btn")
+    ) {
       setIsSidebarOpen(false);
     }
   };
 
-  console.log(image);
+  console.log(currentImage);
+  console.log(currentImage.comments);
 
   return (
     <div
       className="w-full h-screen flex relative bg-black"
       onClick={handleClickOutside}
     >
-      {/* Image Container */}
+      {/* currentImage Container */}
       <div className="flex flex-grow justify-center items-center overflow-hidden">
         <img
-          src={image.imageUrl}
-          alt={image.name}
+          src={currentImage.imageUrl}
+          alt={currentImage.name}
           className="max-w-full max-h-full object-contain w-auto h-auto"
         />
 
@@ -66,28 +90,24 @@ export default function ImageViewer() {
       {/* Sidebar for Metadata & Comments */}
       {isSidebarOpen && (
         <div className="w-80 bg-white p-4 overflow-y-auto shadow-lg h-full absolute right-0 top-0">
-          <h2 className="text-lg font-semibold text-left">{image.name}</h2>
+          <h2 className="text-lg font-semibold text-left">
+            {currentImage.name}
+          </h2>
           <p className="text-left">
-            <strong>Uploaded By:</strong> {image.albumId.owner.name}
+            <strong>Uploaded By:</strong> {currentImage.albumId.owner.name}
           </p>
           <p className="text-left">
-            <strong>Album:</strong> {image.albumId.title}
+            <strong>Album:</strong> {currentImage.albumId.title}
           </p>
           <p className="text-left">
-            <strong>Date:</strong> {image.createdAt}
+            <strong>Date:</strong> {currentImage.createdAt}
           </p>
           <p className="text-left">
-            <strong>Size:</strong> {`${image.size} MB`}
+            <strong>Size:</strong> {`${currentImage.size} MB`}
           </p>
           <hr />
           <h3 className="mt-4 text-lg font-semibold">Comments</h3>
-          <div className="space-y-2 mb-4 max-h-40 overflow-y-auto">
-            {comments.map((c, index) => (
-              <div key={index} className="p-2 bg-gray-100 rounded-md">
-                {c}
-              </div>
-            ))}
-          </div>
+         
 
           <div className="flex gap-2">
             <Input
@@ -95,8 +115,31 @@ export default function ImageViewer() {
               placeholder="Add a comment"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
+              className="comment-input"
             />
-            <Button onClick={handleCommentSubmit}>Post</Button>
+
+            <Button onClick={handleCommentSubmit} className="post-btn">
+              Post
+            </Button>
+          </div>
+          <div className="space-y-2 my-4 max-h-100 overflow-y-auto">
+            {currentImage.comments &&
+              currentImage.comments.map((c, index) => (
+                <div
+                  key={index}
+                  className="p-2 bg-gray-100 rounded-md flex items-start gap-2"
+                >
+                  <img
+                    src={c.owner.profilePic}
+                    alt={c.owner.name}
+                    className="w-8 h-8 rounded-full"
+                  />
+                  <div>
+                    <p className="font-semibold">{c.owner.name}</p>
+                    <p className="text-gray-700">{c.comment}</p>
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
       )}

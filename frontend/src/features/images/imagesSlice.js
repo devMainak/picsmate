@@ -146,10 +146,14 @@ const imagesSlice = createSlice({
     });
     // addFavouriteImageAsync promise cases
     builder.addCase(addFavouriteImageAsync.fulfilled, (state, action) => {
-      const { updatedImage } = action.payload;
-      state.images = state.images.map((image) =>
-        image._id === updatedImage._id ? updatedImage : image
-      );
+      const { updatedImage, comment } = action.payload;
+      state.images = state.images.map((image) => {
+        if (image._id === updatedImage._id) {
+          image.comments.push(comment);
+          return image;
+        }
+        return image;
+      });
     });
     // addCommentAsync promise cases
     builder.addCase(addCommentAsync.fulfilled, (state, action) => {

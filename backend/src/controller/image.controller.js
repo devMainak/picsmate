@@ -11,7 +11,12 @@ cloudinary.config({
 
 exports.getAllImages = async (req, res) => {
   try {
-    const images = await Image.find();
+    const images = await Image.find().populate({
+      path: "albumId",
+      populate: {
+        path: "owner",
+      },
+    });
     if (!images.length) {
       res.status(404).json({ message: "No images found." });
     } else {
@@ -152,7 +157,7 @@ exports.addComment = async (req, res) => {
     } else {
       res
         .status(201)
-        .json({ message: "Added comment for image.", updatedImage });
+        .json({ message: "Added comment for image.", updatedImage, comment });
     }
   } catch (error) {
     console.error(error);
