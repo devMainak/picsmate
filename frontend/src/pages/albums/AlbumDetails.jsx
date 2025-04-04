@@ -9,7 +9,7 @@ const AlbumDetails = () => {
 
   const { images } = useSelector((state) => state.images);
 
-  const albumImages = images.filter((image) => image.albumId === album._id);
+  const albumImages = images.filter((image) => image.albumId._id === album._id);
 
   return (
     <div className="p-5">

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const AlbumLink = ({ album }) => {
   const { images } = useSelector((state) => state.images);
 
-  const albumImages = images.filter((image) => image.albumId === album._id);
+  const albumImages = images.filter((image) => image.albumId._id === album._id);
 
   return (
     <div className="py-[5px]">
