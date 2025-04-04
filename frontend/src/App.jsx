@@ -7,6 +7,7 @@ import SidebarLayout from "./components/sidebar/SidebarLayout";
 import AlbumView from "./pages/albums/AlbumView";
 import AlbumDetails from "./pages/albums/AlbumDetails";
 import ImageViewer from "./features/images/ImageViewer";
+import FavouritesView from "./pages/favourites/FavouritesView";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
               <Route path="/albums" element={<AlbumView />} />
               <Route path="/albums/:albumId" element={<AlbumDetails />} />
               <Route path="/photos/:imageId" element={<ImageViewer />} />
+              <Route path="/photos/favourites" element={<FavouritesView />} />
             </Route>
           </Route>
         </Routes>

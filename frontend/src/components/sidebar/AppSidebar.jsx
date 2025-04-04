@@ -34,7 +34,7 @@ const items = [
   },
   {
     title: "Favourites",
-    url: "#",
+    url: "/photos/favourites",
     icon: Star,
   },
   {
