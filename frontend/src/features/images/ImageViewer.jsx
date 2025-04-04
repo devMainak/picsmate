@@ -4,11 +4,14 @@ import { Heart, Trash, Info, ArrowLeft } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { addCommentAsync, addFavouriteImageAsync } from "./imagesSlice";
+import {
+  addCommentAsync,
+  addFavouriteImageAsync,
+  deleteImageAsync,
+} from "./imagesSlice";
 
 export default function ImageViewer() {
   const [comment, setComment] = useState("");
-  const [comments, setComments] = useState([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -61,6 +64,16 @@ export default function ImageViewer() {
     );
   };
 
+  const handleImageDelete = () => {
+    dispatch(
+      deleteImageAsync({
+        imageId: currentImage._id,
+        albumId: currentImage.albumId._id,
+      })
+    );
+    navigate(-1);
+  };
+
   return (
     <div
       className="w-full h-screen flex relative bg-black"
@@ -90,8 +103,8 @@ export default function ImageViewer() {
               }
             />
           </Button>
-          <Button variant="ghost" size="icon">
-            <Trash className="text-gray-700" />
+          <Button variant="ghost" size="icon" onClick={handleImageDelete}>
+            <Trash className="text-yellow-700" />
           </Button>
           <Button
             variant="ghost"
