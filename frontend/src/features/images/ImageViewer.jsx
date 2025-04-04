@@ -4,7 +4,7 @@ import { Heart, Trash, Info, ArrowLeft } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { addCommentAsync } from "./imagesSlice";
+import { addCommentAsync, addFavouriteImageAsync } from "./imagesSlice";
 
 export default function ImageViewer() {
   const [comment, setComment] = useState("");
@@ -52,9 +52,14 @@ export default function ImageViewer() {
     }
   };
 
-  console.log(user);
-  console.log(currentImage);
-  console.log(currentImage.comments);
+  const handleAddFavouriteImage = () => {
+    dispatch(
+      addFavouriteImageAsync({
+        imageId: currentImage._id,
+        albumId: currentImage.albumId._id,
+      })
+    );
+  };
 
   return (
     <div
@@ -76,8 +81,14 @@ export default function ImageViewer() {
           </Button>
         </div>
         <div className="absolute top-4 right-4 flex gap-2">
-          <Button variant="ghost" size="icon">
-            <Heart className="text-red-500" />
+          <Button variant="ghost" size="icon" onClick={handleAddFavouriteImage}>
+            <Heart
+              className={
+                currentImage.isFavourite === true
+                  ? "text-red-700 fill-red-700"
+                  : "text-red-700"
+              }
+            />
           </Button>
           <Button variant="ghost" size="icon">
             <Trash className="text-gray-700" />
@@ -87,7 +98,7 @@ export default function ImageViewer() {
             size="icon"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           >
-            <Info className="text-blue-500" />
+            <Info className="text-blue-700" />
           </Button>
         </div>
       </div>

@@ -149,8 +149,10 @@ const imagesSlice = createSlice({
       const { updatedImage } = action.payload;
       state.images = state.images.map((image) => {
         if (image._id === updatedImage._id) {
-          image.comments.push(comment);
-          return image;
+          return {
+            ...image,
+            isFavourite: updatedImage.isFavourite,
+          };
         }
         return image;
       });

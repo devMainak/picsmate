@@ -20,7 +20,7 @@ const imageSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    isFavorite: {
+    isFavourite: {
       type: Boolean,
       default: false,
     },

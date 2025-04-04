@@ -118,25 +118,27 @@ exports.uploadImage = async (req, res) => {
     res.status(500).json({ message: "Image upload failed", error });
   }
 };
-
 exports.favouriteImage = async (req, res) => {
   const { imageId } = req.params;
 
   try {
-    const { isFavorite } = req.body;
-    const updatedImage = await Image.findByIdAndUpdate(imageId, {
-      isFavorite: isFavorite ? false : true,
-    });
-    if (!updatedImage) {
-      res.status(400).json({ message: "Failed to add image as favourite" });
-    } else {
-      res
-        .status(200)
-        .json({ message: "Image added as favourite", updatedImage });
+    const image = await Image.findById(imageId);
+    if (!image) {
+      return res.status(404).json({ message: "Image not found" });
     }
+
+    image.isFavourite = !image.isFavourite;
+    const updatedImage = await image.save();
+
+    res.status(200).json({
+      message: `Image ${
+        image.isFavourite ? "added to" : "removed from"
+      } favourites`,
+      updatedImage,
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Failed to add image as favourite." });
+    res.status(500).json({ message: "Failed to toggle favourite status." });
   }
 };
 
