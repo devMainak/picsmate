@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Heart, Trash, Info, ArrowLeft } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { addCommentAsync } from "./imagesSlice";
@@ -16,7 +16,10 @@ export default function ImageViewer() {
   const image = location.state;
   const { user } = useSelector((state) => state.auth);
   const { images } = useSelector((state) => state.images);
-  const currentImage = images.find((pic) => pic._id === image._id);
+  const currentImage = useMemo(
+    () => images.find((pic) => pic._id === image._id),
+    [images, image._id]
+  );
 
   const handleCommentSubmit = () => {
     if (comment) {
@@ -34,6 +37,7 @@ export default function ImageViewer() {
           imageId: currentImage._id,
         })
       );
+      setComment("");
     }
   };
 
@@ -48,6 +52,7 @@ export default function ImageViewer() {
     }
   };
 
+  console.log(user);
   console.log(currentImage);
   console.log(currentImage.comments);
 
@@ -107,7 +112,6 @@ export default function ImageViewer() {
           </p>
           <hr />
           <h3 className="mt-4 text-lg font-semibold">Comments</h3>
-         
 
           <div className="flex gap-2">
             <Input
@@ -115,6 +119,7 @@ export default function ImageViewer() {
               placeholder="Add a comment"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
+              required
               className="comment-input"
             />
 
