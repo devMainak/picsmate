@@ -139,7 +139,7 @@ const imagesSlice = createSlice({
     });
     // uploadImage promise cases
     builder.addCase(uploadImageAsync.fulfilled, (state, action) => {
-      state.images.push(action.payload.savedImage);
+      state.images.push(action.payload.uploadedImage);
     });
     builder.addCase(uploadImageAsync.rejected, (state, action) => {
       state.error = action.payload;

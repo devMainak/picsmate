@@ -9,13 +9,17 @@ const AlbumDetails = () => {
 
   const { images } = useSelector((state) => state.images);
 
-  const albumImages = images.filter((image) => image.albumId._id === album._id);
+  const albumImages = images.filter(
+    (image) => image.albumId?._id === album._id || image.albumId === album._id
+  );
 
   return (
     <div className="p-5">
       <div className="flex justify-between">
         <div>
-          <h3 className="scroll-m-20 text-left text-2xl font-semibold tracking-tight">{album.title}</h3>
+          <h3 className="scroll-m-20 text-left text-2xl font-semibold tracking-tight">
+            {album.title}
+          </h3>
           <p className="text-left italic">
             {album.description ? album.description : ""}
           </p>

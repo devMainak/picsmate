@@ -109,10 +109,16 @@ exports.uploadImage = async (req, res) => {
     });
 
     const savedImage = await newImage.save();
+    const uploadedImage = await savedImage.populate({
+      path: "albumId",
+      populate: {
+        path: "owner",
+      },
+    });
 
     res
       .status(201)
-      .json({ message: "Image uploaded successfully", savedImage });
+      .json({ message: "Image uploaded successfully", uploadedImage });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Image upload failed", error });
