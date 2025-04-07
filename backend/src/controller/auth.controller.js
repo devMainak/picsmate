@@ -55,7 +55,7 @@ exports.authCallback = async (req, res) => {
     const accessToken = createAccessToken(user);
     setSecureCookie(res, accessToken);
 
-    return res.redirect(`http://localhost:5173/dashboard`);
+    return res.redirect(`http://localhost:5173/photos`);
   } catch (error) {
     console.error("Error during authentication:", error);
     res.status(500).json({ message: "Authentication failed" });
