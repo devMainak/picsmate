@@ -6,12 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchImagesAsync } from "@/features/images/imagesSlice";
 import ImageList from "@/features/images/ImageList";
 import { UploadPictureDialog } from "@/features/images/UploadPictureDialog";
+import { fetchAlbumsAsync } from "@/features/albums/albumsSlice";
 
 const PhotoView = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchImagesAsync());
+    dispatch(fetchAlbumsAsync());
   }, []);
 
   const { images } = useSelector((state) => state.images);

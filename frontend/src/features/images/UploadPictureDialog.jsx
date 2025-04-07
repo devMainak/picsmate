@@ -10,21 +10,32 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearError, uploadImageAsync } from "./imagesSlice";
+import { useLocation } from "react-router-dom";
 
 export function UploadPictureDialog({ albumId }) {
   const [name, setName] = useState("");
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
+  const [selectedAlbum, setSelectedAlbum] = useState("");
   const [person, setPerson] = useState("");
   const [tags, setTags] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [localError, setLocalError] = useState(null); // Local error state
+  const location = useLocation();
 
   const dispatch = useDispatch();
   const backendError = useSelector((state) => state.images.error); // Get error from Redux store
+  const { albums } = useSelector((state) => state.albums);
 
   useEffect(() => {
     if (isOpen) {
@@ -32,6 +43,7 @@ export function UploadPictureDialog({ albumId }) {
       setName("");
       setImage(null);
       setImagePreview("");
+      setSelectedAlbum("");
       setPerson("");
       setTags([]);
       setLocalError(null);
@@ -66,11 +78,23 @@ export function UploadPictureDialog({ albumId }) {
       return;
     }
 
+    console.log(selectedAlbum);
+
+    if (location.pathname === "/photos" && !selectedAlbum) {
+      setLocalError("Please select an album.");
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append(
         "imageData",
-        JSON.stringify({ name, albumId, person, tags })
+        JSON.stringify({
+          name,
+          albumId: selectedAlbum ? selectedAlbum : albumId,
+          person,
+          tags,
+        })
       );
       formData.append("file", image);
 
@@ -120,6 +144,21 @@ export function UploadPictureDialog({ albumId }) {
                 required
               />
             </div>
+            {location.pathname === "/photos" && (
+              <div className="grid w-full max-w-sm items-center gap-1.5">
+                <Label htmlFor="album">Select Album</Label>
+                <Select onValueChange={(value) => setSelectedAlbum(value)}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Albums" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {albums.map((album) => (
+                      <SelectItem value={album._id}>{album.title}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
             <div className="grid w-full max-w-sm items-center gap-1.5">
               <Label htmlFor="picture">Picture</Label>
               <Input id="picture" type="file" onChange={handleFileChange} />
