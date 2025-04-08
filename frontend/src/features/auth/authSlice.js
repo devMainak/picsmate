@@ -100,6 +100,7 @@ const authSlice = createSlice({
     });
     builder.addCase(verifyAuthAsync.fulfilled, (state, action) => {
       state.loading = false;
+      state.user = action.payload.user;
       state.isAuthenticated = true;
     });
     builder.addCase(verifyAuthAsync.rejected, (state, action) => {

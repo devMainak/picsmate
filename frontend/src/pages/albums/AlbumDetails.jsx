@@ -9,7 +9,9 @@ const AlbumDetails = () => {
   const album = location.state;
 
   const { images } = useSelector((state) => state.images);
+  const { user } = useSelector((state) => state.auth);
 
+  const isOwner = album.owner === user._id ? true : false;
   const albumImages = images.filter(
     (image) => image.albumId?._id === album._id || image.albumId === album._id
   );
@@ -25,14 +27,16 @@ const AlbumDetails = () => {
             {album.description ? album.description : ""}
           </p>
         </div>
-        <div className="flex gap-4">
-          <div>
-            <UploadPictureDialog albumId={album._id} />
+        {isOwner && (
+          <div className="flex gap-4">
+            <div>
+              <UploadPictureDialog albumId={album._id} />
+            </div>
+            <div>
+              <ShareAlbumDialog albumId={album._id} />
+            </div>
           </div>
-          <div>
-            <ShareAlbumDialog albumId={album._id} />
-          </div>
-        </div>
+        )}
       </div>
       <div>
         <ImageList images={albumImages} />

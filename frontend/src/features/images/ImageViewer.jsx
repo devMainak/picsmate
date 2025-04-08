@@ -10,6 +10,7 @@ import {
   deleteImageAsync,
 } from "./imagesSlice";
 import CommentList from "./CommentList";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function ImageViewer() {
   const [comment, setComment] = useState("");
@@ -18,12 +19,14 @@ export default function ImageViewer() {
   const navigate = useNavigate();
   const location = useLocation();
   const image = location.state;
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useAuth();
   const { images } = useSelector((state) => state.images);
   const currentImage = useMemo(
     () => images.find((pic) => pic._id === image._id),
     [images, image._id]
   );
+
+  const isOwner = currentImage.albumId.owner === user._id ? true : false;
 
   const handleCommentSubmit = () => {
     if (comment) {
@@ -95,18 +98,26 @@ export default function ImageViewer() {
           </Button>
         </div>
         <div className="absolute top-4 right-4 flex gap-2">
-          <Button variant="ghost" size="icon" onClick={handleAddFavouriteImage}>
-            <Heart
-              className={
-                currentImage.isFavourite === true
-                  ? "text-red-700 fill-red-700"
-                  : "text-red-700"
-              }
-            />
-          </Button>
-          <Button variant="ghost" size="icon" onClick={handleImageDelete}>
-            <Trash className="text-yellow-700" />
-          </Button>
+          {isOwner && (
+            <div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleAddFavouriteImage}
+              >
+                <Heart
+                  className={
+                    currentImage.isFavourite === true
+                      ? "text-red-700 fill-red-700"
+                      : "text-red-700"
+                  }
+                />
+              </Button>
+              <Button variant="ghost" size="icon" onClick={handleImageDelete}>
+                <Trash className="text-yellow-700" />
+              </Button>
+            </div>
+          )}
           <Button
             variant="ghost"
             size="icon"

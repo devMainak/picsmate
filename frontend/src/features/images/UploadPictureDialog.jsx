@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearError, uploadImageAsync } from "./imagesSlice";
 import { useLocation } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 export function UploadPictureDialog({ albumId }) {
   const [name, setName] = useState("");
@@ -36,6 +37,9 @@ export function UploadPictureDialog({ albumId }) {
   const dispatch = useDispatch();
   const backendError = useSelector((state) => state.images.error); // Get error from Redux store
   const { albums } = useSelector((state) => state.albums);
+  const { user } = useAuth();
+
+  const userAlbums = albums.filter((album) => album.owner === user._id);
 
   useEffect(() => {
     if (isOpen) {
@@ -78,8 +82,6 @@ export function UploadPictureDialog({ albumId }) {
       return;
     }
 
-    console.log(selectedAlbum);
-
     if (location.pathname === "/photos" && !selectedAlbum) {
       setLocalError("Please select an album.");
       return;
@@ -101,7 +103,6 @@ export function UploadPictureDialog({ albumId }) {
       await dispatch(uploadImageAsync({ formData, albumId })).unwrap();
       setIsOpen(false);
     } catch (err) {
-      console.log(backendError);
       setLocalError("Failed to upload image. Please try again.");
     }
   };
@@ -152,7 +153,7 @@ export function UploadPictureDialog({ albumId }) {
                     <SelectValue placeholder="Albums" />
                   </SelectTrigger>
                   <SelectContent>
-                    {albums.map((album) => (
+                    {userAlbums.map((album) => (
                       <SelectItem value={album._id}>{album.title}</SelectItem>
                     ))}
                   </SelectContent>
