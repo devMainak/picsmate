@@ -75,7 +75,7 @@ exports.login = async (req, res) => {
     const accessToken = createAccessToken(user);
     setSecureCookie(res, accessToken);
 
-    return res.redirect(`http://localhost:5173/profile`);
+    return res.redirect(`http://localhost:5173/photos`);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Authorization Failed." });
