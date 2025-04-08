@@ -38,7 +38,7 @@ export function LoginForm({ className, ...props }) {
                 <span className="relative z-10 bg-background px-2 text-muted-foreground">
                   Or continue with
                 </span>
-              </div>
+              </div>  
               <div>
                 <Button
                   variant="outline"
