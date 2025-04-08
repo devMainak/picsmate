@@ -1,20 +1,25 @@
+import { useEffect, useMemo } from "react";
 import AlbumList from "@/features/albums/AlbumList";
 import { fetchAlbumsAsync } from "@/features/albums/albumsSlice";
 import { CreateAlbumDialog } from "@/features/albums/CreateAlbumDialog";
 import { useAuth } from "@/hooks/useAuth";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const AlbumView = () => {
   const dispatch = useDispatch();
 
   const { user } = useAuth();
-  console.log(user);
+
   useEffect(() => {
     dispatch(fetchAlbumsAsync(user));
   }, []);
 
   const { albums, loading, error } = useSelector((state) => state.albums);
+  // const userAlbums = useMemo(() => {
+  //   return albums.filter(
+  //     (album) => user._id === album.owner || album.accessList.includes(user._id)
+  //   );
+  // }, [albums, user._id]);
 
   return (
     <div className="p-[10px]">

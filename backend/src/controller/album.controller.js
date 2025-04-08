@@ -1,5 +1,6 @@
 const Album = require("../models/album.model");
 const User = require("../models/user.model");
+const validator = require("validator");
 
 exports.getAlbums = async (req, res) => {
   try {
@@ -53,17 +54,15 @@ exports.updateAlbum = async (req, res) => {
 exports.shareAlbum = async (req, res) => {
   const { albumId } = req.params;
   try {
-    const { emails } = req.body;
-    const invalidEmails = emails.filter((email) => !validator.isEmail(email));
-    if (invalidEmails.length) {
-      return res
-        .status(400)
-        .json({ message: "Some emails have an invalid format", invalidEmails });
+    const { email } = req.body;
+
+    if (!validator.isEmail(email)) {
+      return res.status(400).json({ message: "Invalid email format" });
     }
 
-    const users = await User.find({ email: { $in: emails } }, "email");
-    if (users.length !== emails.length) {
-      return res.status(400).json({ message: "Some users haven't signed up." });
+    const user = await User.findOne({ email }, "email");
+    if (!user) {
+      return res.status(400).json({ message: "User hasn't signed up." });
     }
 
     const album = await Album.findById(albumId);
@@ -71,16 +70,17 @@ exports.shareAlbum = async (req, res) => {
       return res.status(404).json({ message: "Album not found" });
     }
 
-    album.accessList = [...new Set([...album.accessList, ...emails])];
-
-    await album.save();
+    if (!album.accessList.includes(email)) {
+      album.accessList.push(email);
+      await album.save();
+    }
 
     res
       .status(200)
-      .json({ message: "Emails added to access list.", updatedAlbum: album });
+      .json({ message: "Email added to access list.", updatedAlbum: album });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Failed to added emails to access list" });
+    res.status(500).json({ message: "Failed to add email to access list" });
   }
 };
 

@@ -55,10 +55,10 @@ export const updateAlbumAsync = createAsyncThunk(
 
 export const shareAlbumAsync = createAsyncThunk(
   "album/share",
-  async ({ albumId, emails }, { rejectWithValue }) => {
+  async ({ albumId, email }, { rejectWithValue }) => {
     try {
       const response = await webServerAxios.post(`/albums/${albumId}/share`, {
-        emails,
+        email,
       });
       return response.data;
     } catch (error) {
@@ -94,13 +94,18 @@ const albumsSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    clearAlbumError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     // fetchAlbumAsync promise cases
     builder.addCase(fetchAlbumsAsync.pending, (state) => {
       state.loading = true;
     });
     builder.addCase(fetchAlbumsAsync.fulfilled, (state, action) => {
+      console.log(action.payload);
       state.loading = false;
       state.albums =
         action.payload.albums.length === 0 ? [] : action.payload.albums;
@@ -108,6 +113,7 @@ const albumsSlice = createSlice({
     builder.addCase(fetchAlbumsAsync.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload.message || "Failed to fetch albums";
+      state.albums = [];
     });
     // createAlbumAsync promise cases
     builder.addCase(createAlbumAsync.fulfilled, (state, action) => {
@@ -127,7 +133,12 @@ const albumsSlice = createSlice({
         album._id === updatedAlbum._id ? updatedAlbum : album
       );
     });
+    builder.addCase(shareAlbumAsync.rejected, (state, action) => {
+      state.error = action.payload;
+    });
   },
 });
+
+export const { clearAlbumError } = albumsSlice.actions;
 
 export default albumsSlice.reducer;

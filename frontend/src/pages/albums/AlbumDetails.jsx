@@ -2,6 +2,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { UploadPictureDialog } from "@/features/images/UploadPictureDialog";
 import { useSelector } from "react-redux";
 import ImageList from "@/features/images/ImageList";
+import ShareAlbumDialog from "@/features/albums/ShareAlbumDialog";
 
 const AlbumDetails = () => {
   const location = useLocation();
@@ -24,8 +25,13 @@ const AlbumDetails = () => {
             {album.description ? album.description : ""}
           </p>
         </div>
-        <div>
-          <UploadPictureDialog albumId={album._id} />
+        <div className="flex gap-4">
+          <div>
+            <UploadPictureDialog albumId={album._id} />
+          </div>
+          <div>
+            <ShareAlbumDialog albumId={album._id} />
+          </div>
         </div>
       </div>
       <div>
