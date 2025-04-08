@@ -15,11 +15,6 @@ const AlbumView = () => {
   }, []);
 
   const { albums, loading, error } = useSelector((state) => state.albums);
-  // const userAlbums = useMemo(() => {
-  //   return albums.filter(
-  //     (album) => user._id === album.owner || album.accessList.includes(user._id)
-  //   );
-  // }, [albums, user._id]);
 
   return (
     <div className="p-[10px]">

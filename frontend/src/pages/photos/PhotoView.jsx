@@ -1,12 +1,10 @@
 import { useEffect } from "react";
-import axios from "axios";
-import { AppSidebar } from "@/components/sidebar/AppSidebar";
-import SidebarLayout from "@/components/sidebar/SidebarLayout";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchImagesAsync } from "@/features/images/imagesSlice";
 import ImageList from "@/features/images/ImageList";
 import { UploadPictureDialog } from "@/features/images/UploadPictureDialog";
 import { fetchAlbumsAsync } from "@/features/albums/albumsSlice";
+import { useAuth } from "@/hooks/useAuth";
 
 const PhotoView = () => {
   const dispatch = useDispatch();
@@ -14,9 +12,16 @@ const PhotoView = () => {
   useEffect(() => {
     dispatch(fetchImagesAsync());
     dispatch(fetchAlbumsAsync());
-  }, []);
+  }, [dispatch]);
 
   const { images } = useSelector((state) => state.images);
+  const { user } = useAuth();
+
+  const userImages = images.filter(
+    (image) =>
+      user._id === image.albumId.owner._id ||
+      image.albumId.accessList.includes(user.email)
+  );
 
   return (
     <div className="p-[10px]">
@@ -29,7 +34,7 @@ const PhotoView = () => {
         </div>
       </div>
       <div>
-        <ImageList images={images} />
+        <ImageList images={userImages} />
       </div>
     </div>
   );
