@@ -24,7 +24,7 @@ router.use(authenticate);
 
 router.get("/", getAllImages);
 router.get("/favourites", getFavoriteImages);
-router.get("/tags", getImagesByTag);
+router.get("/search", getImagesByTag);
 router.post("/", multerUpload.single("file"), uploadImage);
 router.put("/:imageId/favourite", favouriteImage);
 router.post("/:imageId/comments", addComment);

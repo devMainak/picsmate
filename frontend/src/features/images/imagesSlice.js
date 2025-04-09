@@ -21,9 +21,10 @@ export const fetchImagesByTag = createAsyncThunk(
   "images/fetchByTag",
   async ({ albumId, tags }, { rejectWithValue }) => {
     try {
-      const response = await axios.get(
-        `/api/images/${albumId}?tags=${tags.join(",")}`
+      const response = await webServerAxios.get(
+        `/albums/${albumId}/images/search?tags=${tags.join(",")}`
       );
+      console.log(response.data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -118,10 +119,14 @@ const imagesSlice = createSlice({
     images: [],
     loading: false,
     error: null,
+    searchMode: false,
   },
   reducers: {
     clearError: (state) => {
       state.error = null;
+    },
+    setSearchMode: (state, action) => {
+      state.searchMode = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -135,7 +140,14 @@ const imagesSlice = createSlice({
     });
     builder.addCase(fetchImagesAsync.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.payload.message || "Failed to fetch images";
+      state.error = action.payload?.message || "Failed to fetch images";
+    });
+    // fetchImagesByTag promise cases
+    builder.addCase(fetchImagesByTag.fulfilled, (state, action) => {
+      state.images = action.payload.images;
+    });
+    builder.addCase(fetchImagesByTag.rejected, (state, action) => {
+      state.error = action.payload;
     });
     // uploadImage promise cases
     builder.addCase(uploadImageAsync.fulfilled, (state, action) => {
@@ -181,6 +193,6 @@ const imagesSlice = createSlice({
   },
 });
 
-export const { clearError } = imagesSlice.actions;
+export const { clearError, setSearchMode } = imagesSlice.actions;
 
 export default imagesSlice.reducer;

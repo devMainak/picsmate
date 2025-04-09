@@ -8,9 +8,12 @@ import { useAuth } from "@/hooks/useAuth";
 
 const PhotoView = () => {
   const dispatch = useDispatch();
+  const { searchMode } = useSelector((state) => state.images);
 
   useEffect(() => {
-    dispatch(fetchImagesAsync());
+    if (!searchMode) {
+      dispatch(fetchImagesAsync());
+    }
     dispatch(fetchAlbumsAsync());
   }, [dispatch]);
 

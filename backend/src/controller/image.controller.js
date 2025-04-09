@@ -50,19 +50,20 @@ exports.getFavoriteImages = async (req, res) => {
 
 exports.getImagesByTag = async (req, res) => {
   try {
-    const { albumId } = req.params;
     const { tags } = req.query;
 
     const tagFilter = tags ? { tags: { $in: tags.split(",") } } : {};
 
-    const images = await Image.find({ albumId, ...tagFilter });
-    if (!images.length) {
-      res.status(404).json({ message: "Failed to load images with tags." });
-    } else {
-      res
-        .status(200)
-        .json({ message: "Images with the following tags fetched.", images });
-    }
+    const images = await Image.find(tagFilter).populate({
+      path: "albumId",
+      populate: {
+        path: "owner",
+      },
+    });
+
+    res
+      .status(200)
+      .json({ message: "Images with the following tags fetched.", images });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to load images with tags." });

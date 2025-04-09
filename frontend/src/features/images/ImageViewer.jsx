@@ -146,6 +146,12 @@ export default function ImageViewer() {
           <p className="text-left">
             <strong>Size:</strong> {`${currentImage.size} MB`}
           </p>
+          {currentImage.tags.length !== 0 && (
+            <p className="text-left">
+              <strong>Tags:</strong> {currentImage.tags.join(", ")}
+            </p>
+          )}
+
           <hr />
           <h3 className="mt-4 text-lg font-semibold">Comments</h3>
 
