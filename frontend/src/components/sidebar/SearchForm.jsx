@@ -44,7 +44,7 @@ export function SearchForm({ ...props }) {
         </Label>
         <SidebarInput
           id="search"
-          placeholder="Search by tags..."
+          placeholder='Search by tags ", "'
           className="h-8 pl-7"
           value={searchedTags}
           onChange={(e) => setSearchedTags(e.target.value)}
