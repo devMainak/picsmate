@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
 const axios = require("axios");
+const validator = require("validator");
 const { createAccessToken } = require("../services/createAccessToken");
 const { setSecureCookie } = require("../services/setSecureCookie");
 
@@ -68,14 +69,17 @@ exports.login = async (req, res) => {
     if (!email) {
       return res.status(400).json({ message: "Credentials missing." });
     }
+    if (!validator.isEmail(email)) {
+      return res.status(400).json({ message: "Enter a valid email" });
+    }
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ message: "No user found" });
+      return res.status(400).json({ message: "User have not registered." });
     }
     const accessToken = createAccessToken(user);
     setSecureCookie(res, accessToken);
 
-    return res.redirect(`http://localhost:5173/photos`);
+    return res.status(200).json({ message: "Login successful", user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Authorization Failed." });

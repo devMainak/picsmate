@@ -3,10 +3,50 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { AlertDestructive } from "../Alert/AlertDestructive";
 import { useAuth } from "@/hooks/useAuth";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { clearAuthError } from "@/features/auth/authSlice";
+import { useNavigate, Link } from "react-router-dom";
 
 export function LoginForm({ className, ...props }) {
-  const { loginWithGoogle } = useAuth();
+  const [email, setEmail] = useState("");
+  const [localError, setLocalError] = useState(null);
+  const backendError = useSelector((state) => state.auth.error);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loginWithGoogle, login, isAuthenticated } = useAuth();
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  const backendPort = import.meta.env.VITE_BACKEND_PORT;
+
+  useEffect(() => {
+    if (isAuthenticated === true) {
+      navigate("/photos");
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    dispatch(clearAuthError());
+  }, [backendError]);
+
+  const clearLocalError = () => {
+    setTimeout(() => {
+      setLocalError(null);
+    }, 2000);
+  };
+
+  const handleLogin = () => {
+    if (!email) {
+      setLocalError("Enter a email!");
+      clearLocalError();
+      return;
+    }
+    login({ email });
+    setEmail("");
+    navigate("/photos");
+  };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -20,17 +60,23 @@ export function LoginForm({ className, ...props }) {
                   Login to your picsmate account
                 </p>
               </div>
+              {/* Show AlertDestructive if there's an error */}
+              {(localError || backendError) && (
+                <AlertDestructive message={localError || backendError} />
+              )}
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="email@example.com"
+                  required
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <Button
-                // type="submit"
                 className="w-full bg-zinc-950 dark:bg-white"
+                onClick={handleLogin}
               >
                 Login
               </Button>
@@ -38,12 +84,12 @@ export function LoginForm({ className, ...props }) {
                 <span className="relative z-10 bg-background px-2 text-muted-foreground">
                   Or continue with
                 </span>
-              </div>  
+              </div>
               <div>
                 <Button
                   variant="outline"
                   className="w-full flex items-center justify-center gap-2"
-                  onClick={() => loginWithGoogle()}
+                  onClick={loginWithGoogle}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -60,9 +106,12 @@ export function LoginForm({ className, ...props }) {
               </div>
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <a href="#" className="underline underline-offset-4">
-                  Sign up
-                </a>
+                <Link
+                  to={`https://accounts.google.com/o/oauth2/auth?client_id=${googleClientId}&redirect_uri=http://localhost:${backendPort}/auth/google/callback&response_type=code&scope=openid email profile&access_type=offline&prompt=select_account`}
+                  className="underline underline-offset-4"
+                >
+                  Sign up with Google
+                </Link>
               </div>
             </div>
           </div>
