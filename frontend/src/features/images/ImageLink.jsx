@@ -7,7 +7,7 @@ const ImageLink = ({ image }) => {
         <Link to={`/photos/${image._id}`} state={image}>
           <img
             src={image.imageUrl}
-            className="w-250px h-48 rounded-md rounded-md"
+            className="min-w-250px h-48 rounded-md rounded-md"
           />
         </Link>
       </div>
