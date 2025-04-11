@@ -1,6 +1,8 @@
 const Album = require("../models/album.model");
 const User = require("../models/user.model");
+const Image = require("../models/image.model");
 const validator = require("validator");
+const cloudinary = require("cloudinary").v2;
 
 exports.getAlbums = async (req, res) => {
   try {
@@ -86,8 +88,19 @@ exports.shareAlbum = async (req, res) => {
 
 exports.deleteAlbum = async (req, res) => {
   try {
-    const { id } = req.params;
-    const deletedAlbum = await Album.findByIdAndDelete(id);
+    const { albumId } = req.params;
+
+    const images = await Image.find({ albumId });
+
+    const deleteFromCloudinary = images.map(
+      (img) => cloudinary.uploader.destroy(img.public_id) // assumes public_id is saved in the image doc
+    );
+    await Promise.all(deleteFromCloudinary);
+
+    await Image.deleteMany({ albumId });
+
+    const deletedAlbum = await Album.findByIdAndDelete(albumId);
+
     if (!deletedAlbum) {
       return res.status(404).json({ message: "Album not found." });
     }

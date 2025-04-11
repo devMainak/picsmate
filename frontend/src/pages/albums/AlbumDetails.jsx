@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import ImageList from "@/features/images/ImageList";
 import { UploadPictureDialog } from "@/features/images/UploadPictureDialog";
 import { CreateAlbumDialog } from "@/features/albums/CreateAlbumDialog";
+import { DeleteAlbumDialog } from "@/features/albums/DeleteAlbumDialog";
 // import { UploadPictureDialog } from "@/features/images/UploadPictureDialog";
 // import ShareAlbumDialog from "@/features/albums/ShareAlbumDialog";
 // import UpdateAlbumDialog from "@/features/albums/UpdateAlbumDialog";
@@ -69,22 +70,27 @@ const AlbumDetails = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="shadow-lg rounded-lg">
                 <DropdownMenuItem
-                  onClick={() => setShowUpdate(true)}
-                  className="gap-2 hover:bg-red-50 transition-all"
+                  onClick={() => {
+                    setTimeout(() => setShowUpdate(true), 0);
+                  }}
                 >
                   <Pencil className="w-4 h-4 text-red-500" />
                   Update
                 </DropdownMenuItem>
+
                 <DropdownMenuItem
-                  onClick={() => setShowDelete(true)}
-                  className="gap-2 hover:bg-red-50 transition-all"
+                  onClick={() => {
+                    setTimeout(() => setShowDelete(true), 0);
+                  }}
                 >
                   <Trash className="w-4 h-4 text-red-500" />
                   Delete
                 </DropdownMenuItem>
+
                 <DropdownMenuItem
-                  onClick={() => setShowShare(true)}
-                  className="gap-2 hover:bg-red-50 transition-all"
+                  onClick={() => {
+                    setTimeout(() => setShowShare(true), 0);
+                  }}
                 >
                   <Share2 className="w-4 h-4 text-red-500" />
                   Share
@@ -107,9 +113,10 @@ const AlbumDetails = () => {
               />
             )}
             {showDelete && (
-              <YourDeleteAlbumDialog
-                albumId={currentAlbum._id}
+              <DeleteAlbumDialog
+                album={currentAlbum}
                 onClose={() => setShowDelete(false)}
+                open={showDelete}
               />
             )}
           </div>
