@@ -37,6 +37,9 @@ const imageSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    imgPublicId: {
+      type: String,
+    },
   },
   {
     timestamps: true,

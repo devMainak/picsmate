@@ -93,7 +93,7 @@ exports.deleteAlbum = async (req, res) => {
     const images = await Image.find({ albumId });
 
     const deleteFromCloudinary = images.map(
-      (img) => cloudinary.uploader.destroy(img.public_id) // assumes public_id is saved in the image doc
+      (img) => cloudinary.uploader.destroy(img.imgPublicId) // assumes public_id is saved in the image doc
     );
     await Promise.all(deleteFromCloudinary);
 

@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const Image = require("../models/image.model");
-const cloudinary = require("cloudinary");
+const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_API_NAME,
@@ -18,7 +18,7 @@ exports.getAllImages = async (req, res) => {
       },
     });
     if (!images.length) {
-      res.status(404).json({ message: "No images found." });
+      res.status(200).json({ message: "No images found.", images });
     } else {
       res.status(200).json({ message: "Images fetched successfully", images });
     }
@@ -34,8 +34,8 @@ exports.getFavoriteImages = async (req, res) => {
     const favouriteImages = await Image.find({ albumId, isFavorite: true });
     if (!favouriteImages.length) {
       res
-        .status(404)
-        .json({ message: "No favourite images found in the album." });
+        .status(200)
+        .json({ message: "No favourite images found in the album.", images });
     } else {
       res.status(200).json({
         message: "Favourite images fetched from the album.",
@@ -107,6 +107,7 @@ exports.uploadImage = async (req, res) => {
       ...parsedImageData,
       size: sizeInMb,
       imageUrl: cloudinaryResponse.secure_url,
+      imgPublicId: cloudinaryResponse.public_id,
     });
 
     const savedImage = await newImage.save();
@@ -125,6 +126,7 @@ exports.uploadImage = async (req, res) => {
     res.status(500).json({ message: "Image upload failed", error });
   }
 };
+
 exports.favouriteImage = async (req, res) => {
   const { imageId } = req.params;
 
@@ -179,11 +181,17 @@ exports.deleteImage = async (req, res) => {
 
   try {
     const deletedImage = await Image.findByIdAndDelete(imageId);
+
     if (!deletedImage) {
-      res.status(400).json({ message: "Failed to delete image." });
-    } else {
-      res.status(200).json({ message: "Image deleted.", deletedImage });
+      return res.status(400).json({ message: "Failed to delete image." });
     }
+
+    // Make sure public_id exists in the image document
+    if (deletedImage.public_id) {
+      await cloudinary.uploader.destroy(deletedImage.public_id);
+    }
+
+    res.status(200).json({ message: "Image deleted.", deletedImage });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to delete image." });

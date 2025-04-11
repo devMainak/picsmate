@@ -8,25 +8,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteAlbumAsync } from "./albumsSlice";
 import { useNavigate } from "react-router-dom";
 
 export function DeleteAlbumDialog({ album, onClose, open }) {
-  const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const controlledOpen = open !== undefined;
-  const actualOpen = controlledOpen ? open : isOpen;
-
   const handleOpenChange = (val) => {
-    if (controlledOpen) {
-      if (!val && onClose) onClose();
-    } else {
-      setIsOpen(val);
-    }
+    if (!val && onClose) onClose(); // handle close regardless of controlled or not
   };
 
   const handleAlbumDelete = async () => {
@@ -36,7 +27,7 @@ export function DeleteAlbumDialog({ album, onClose, open }) {
   };
 
   return (
-    <AlertDialog open={actualOpen} onOpenChange={handleOpenChange}>
+    <AlertDialog open={open} onOpenChange={handleOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Delete {album.title}?</AlertDialogTitle>
