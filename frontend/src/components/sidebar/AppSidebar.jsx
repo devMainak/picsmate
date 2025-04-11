@@ -1,4 +1,4 @@
-import { Album, Search, Settings, Star, ImageIcon, Image } from "lucide-react";
+import { Album, Settings, Star, ImageIcon, Image } from "lucide-react";
 
 import {
   Sidebar,
@@ -14,10 +14,9 @@ import {
 } from "@/components/ui/sidebar";
 
 import { NavUser } from "./NavUser";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { Skeleton } from "../ui/skeleton";
 import { SidebarSkeleton } from "./SidebarSkeleton";
 
 // Menu items.
@@ -36,16 +35,6 @@ const items = [
     title: "Favourites",
     url: "/photos/favourites",
     icon: Star,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
   },
 ];
 
@@ -71,7 +60,9 @@ export function AppSidebar() {
 
                   {/* App name */}
                   <div className="flex flex-col gap-0.5 leading-none">
-                    <span className="font-semibold">picsmate.</span>
+                    <span className="font-semibold text-red-600">
+                      picsmate.
+                    </span>
                   </div>
                 </div>
               </Link>
@@ -88,7 +79,7 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link to={item.url}>
-                      <item.icon />
+                      <item.icon className="text-red-600" />
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>

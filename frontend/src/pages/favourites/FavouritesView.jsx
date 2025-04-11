@@ -9,8 +9,8 @@ const FavouritesView = () => {
     [images]
   );
   return (
-    <div className="p-[15px]">
-      <h3 className="scroll-m-20 text-left text-2xl font-semibold tracking-tight pt-5">
+    <div className="p-[10px] px-[2rem]">
+      <h3 className="scroll-m-20 text-left text-3xl font-semibold tracking-tight pb-[10px]">
         Favourite Photos
       </h3>
       <div>

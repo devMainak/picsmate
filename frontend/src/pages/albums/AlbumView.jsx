@@ -17,9 +17,9 @@ const AlbumView = () => {
   const { albums, loading, error } = useSelector((state) => state.albums);
 
   return (
-    <div className="p-[10px]">
-      <div className="flex justify-between">
-        <div className="scroll-m-20 text-left text-2xl font-semibold tracking-tight pt-5">
+    <div className="p-[10px] px-[2rem]">
+      <div className="flex justify-between pb-[10px]">
+        <div className="scroll-m-20 text-left text-3xl font-semibold tracking-tight">
           Albums
         </div>
         <div>

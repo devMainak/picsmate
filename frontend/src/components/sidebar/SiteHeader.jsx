@@ -2,7 +2,7 @@
 
 import { SidebarIcon } from "lucide-react";
 
-import { SearchForm     } from "./SearchForm";
+import { SearchForm } from "./SearchForm";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -33,13 +33,11 @@ export function SiteHeader() {
         <Breadcrumb className="hidden sm:block">
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="#">
-                Building Your Application
-              </BreadcrumbLink>
+              <BreadcrumbLink href="#">picsmate</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+              <BreadcrumbPage>Gallery</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>

@@ -27,9 +27,9 @@ const PhotoView = () => {
   );
 
   return (
-    <div className="p-[10px]">
-      <div className="flex justify-between">
-        <div className="scroll-m-20 text-2xl text-left font-semibold tracking-tight">
+    <div className="p-[10px] px-[2rem]">
+      <div className="flex justify-between pb-[10px]">
+        <div className="scroll-m-20 text-3xl text-left font-semibold tracking-tight">
           Photos
         </div>
         <div>
