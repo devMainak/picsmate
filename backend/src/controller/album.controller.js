@@ -34,9 +34,9 @@ exports.createAlbum = async (req, res) => {
 
 exports.updateAlbum = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { albumId } = req.params;
     const { albumdata } = req.body;
-    const updatedAlbum = await Album.findByIdAndUpdate(id, albumdata, {
+    const updatedAlbum = await Album.findByIdAndUpdate(albumId, albumdata, {
       new: true,
     });
     if (!updatedAlbum) {

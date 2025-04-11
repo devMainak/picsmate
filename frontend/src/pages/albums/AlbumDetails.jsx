@@ -1,4 +1,10 @@
-import { MoreHorizontal, Pencil, Trash, Share2, MoreVertical } from "lucide-react";
+import {
+  MoreHorizontal,
+  Pencil,
+  Trash,
+  Share2,
+  MoreVertical,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -10,18 +16,22 @@ import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ImageList from "@/features/images/ImageList";
 import { UploadPictureDialog } from "@/features/images/UploadPictureDialog";
+import { CreateAlbumDialog } from "@/features/albums/CreateAlbumDialog";
 // import { UploadPictureDialog } from "@/features/images/UploadPictureDialog";
 // import ShareAlbumDialog from "@/features/albums/ShareAlbumDialog";
 // import UpdateAlbumDialog from "@/features/albums/UpdateAlbumDialog";
 
 const AlbumDetails = () => {
   const { state: album } = useLocation();
+  const { albums } = useSelector((state) => state.albums);
+  const currentAlbum = albums.find((albumItem) => albumItem._id === album._id);
   const { images } = useSelector((state) => state.images);
   const { user } = useSelector((state) => state.auth);
 
-  const isOwner = album.owner === user._id;
+  const isOwner = currentAlbum.owner === user._id;
   const albumImages = images.filter(
-    (img) => img.albumId?._id === album._id || img.albumId === album._id
+    (img) =>
+      img.albumId?._id === currentAlbum._id || img.albumId === currentAlbum._id
   );
 
   const [showUpdate, setShowUpdate] = useState(false);
@@ -33,11 +43,11 @@ const AlbumDetails = () => {
       <div className="flex flex-col md:flex-row justify-between gap-4">
         <div className="flex flex-col">
           <h3 className="text-3xl font-semibold tracking-tight text-left">
-            {album.title}
+            {currentAlbum.title}
           </h3>
-          {album.description && (
+          {currentAlbum.description && (
             <p className="text-sm text-muted-foreground italic text-left">
-              {album.description}
+              {currentAlbum.description}
             </p>
           )}
         </div>
@@ -54,7 +64,7 @@ const AlbumDetails = () => {
                   className="w-12 h-12 p-3 text-red-600 hover:text-red-700 hover:scale-105 transition-all duration-150"
                   title="Actions"
                 >
-                  <MoreVertical  className="w-6 h-6 stroke-[2.5]" />
+                  <MoreVertical className="w-6 h-6 stroke-[2.5]" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="shadow-lg rounded-lg">
@@ -81,6 +91,27 @@ const AlbumDetails = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            {/* Dialogs */}
+            {showUpdate && (
+              <CreateAlbumDialog
+                album={currentAlbum}
+                open={showUpdate}
+                onClose={() => setShowUpdate(false)}
+                showTriggerButton={false}
+              />
+            )}
+            {showShare && (
+              <ShareAlbumDialog
+                albumId={currentAlbum._id}
+                onClose={() => setShowShare(false)}
+              />
+            )}
+            {showDelete && (
+              <YourDeleteAlbumDialog
+                albumId={currentAlbum._id}
+                onClose={() => setShowDelete(false)}
+              />
+            )}
           </div>
         )}
       </div>
