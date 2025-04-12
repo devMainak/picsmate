@@ -57,7 +57,7 @@ export function LoginForm({ className, ...props }) {
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
                 <p className="text-balance text-muted-foreground">
-                  Login to your picsmate account
+                  Login to your picsmate. account
                 </p>
               </div>
               {(localError || backendError) && (
@@ -74,7 +74,7 @@ export function LoginForm({ className, ...props }) {
                 />
               </div>
               <Button
-                className="w-full bg-zinc-950 dark:bg-white"
+                className="w-full bg-red-600 text-white dark:bg-red-600"
                 onClick={handleLogin}
               >
                 Login
