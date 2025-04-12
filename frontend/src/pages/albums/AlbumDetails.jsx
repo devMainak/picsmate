@@ -1,10 +1,4 @@
-import {
-  MoreHorizontal,
-  Pencil,
-  Trash,
-  Share2,
-  MoreVertical,
-} from "lucide-react";
+import { Pencil, Trash, Share2, MoreVertical } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -53,10 +47,8 @@ const AlbumDetails = () => {
 
         {isOwner && (
           <div className="flex gap-3 items-center">
-            {/* Upload Icon Button */}
             <UploadPictureDialog albumId={album._id} />
 
-            {/* Three Dot Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
@@ -95,7 +87,7 @@ const AlbumDetails = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            {/* Dialogs */}
+
             {showUpdate && (
               <CreateAlbumDialog
                 album={currentAlbum}

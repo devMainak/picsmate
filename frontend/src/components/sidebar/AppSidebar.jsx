@@ -1,4 +1,4 @@
-import { Album, Settings, Star, ImageIcon, Image } from "lucide-react";
+import { Album, Star, ImageIcon, Image } from "lucide-react";
 
 import {
   Sidebar,
@@ -53,12 +53,10 @@ export function AppSidebar() {
             <SidebarMenuButton size="lg" asChild>
               <Link to="/photos">
                 <div className="flex items-center gap-2">
-                  {/* ✅ Add Picture-in-Picture icon here */}
                   <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                     <ImageIcon className="size-5" />
                   </div>
 
-                  {/* App name */}
                   <div className="flex flex-col gap-0.5 leading-none">
                     <span className="font-semibold text-red-600 text-xl">
                       picsmate.

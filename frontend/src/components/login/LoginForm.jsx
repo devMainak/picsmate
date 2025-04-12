@@ -60,7 +60,6 @@ export function LoginForm({ className, ...props }) {
                   Login to your picsmate account
                 </p>
               </div>
-              {/* Show AlertDestructive if there's an error */}
               {(localError || backendError) && (
                 <AlertDestructive message={localError || backendError} />
               )}
@@ -124,10 +123,6 @@ export function LoginForm({ className, ...props }) {
           </div>
         </CardContent>
       </Card>
-      <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
-      </div>
     </div>
   );
 }

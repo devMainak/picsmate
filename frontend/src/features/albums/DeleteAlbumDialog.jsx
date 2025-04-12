@@ -17,7 +17,7 @@ export function DeleteAlbumDialog({ album, onClose, open }) {
   const navigate = useNavigate();
 
   const handleOpenChange = (val) => {
-    if (!val && onClose) onClose(); // handle close regardless of controlled or not
+    if (!val && onClose) onClose();
   };
 
   const handleAlbumDelete = async () => {

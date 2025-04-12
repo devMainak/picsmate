@@ -50,7 +50,6 @@ const ShareAlbumDialog = ({ albumId, onClose, open }) => {
     try {
       await dispatch(shareAlbumAsync({ albumId, email })).unwrap();
 
-      // Close the dialog
       if (controlled) {
         onClose?.();
       } else {
@@ -89,7 +88,9 @@ const ShareAlbumDialog = ({ albumId, onClose, open }) => {
             </div>
           </div>
           <DialogFooter>
-            <Button className="bg-red-600" type="submit">Share</Button>
+            <Button className="bg-red-600" type="submit">
+              Share
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

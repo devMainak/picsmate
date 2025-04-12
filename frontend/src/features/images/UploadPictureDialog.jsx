@@ -44,7 +44,7 @@ export function UploadPictureDialog({ albumId }) {
 
   useEffect(() => {
     if (isOpen) {
-      dispatch(clearError()); // Clear error when the dialog opens
+      dispatch(clearError());
       setName("");
       setImage(null);
       setImagePreview("");
@@ -126,7 +126,6 @@ export function UploadPictureDialog({ albumId }) {
           </DialogDescription>
         </DialogHeader>
 
-        {/* Display Local or Backend Errors */}
         {localError && (
           <div className="bg-red-100 text-red-700 p-2 rounded-md">
             {localError}

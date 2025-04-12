@@ -26,7 +26,6 @@ export function CreateAlbumDialog({ album, onClose, open }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  // Sync form fields when album or dialog open state changes
   useEffect(() => {
     if (actualOpen) {
       setTitle(album?.title || "");
@@ -56,7 +55,6 @@ export function CreateAlbumDialog({ album, onClose, open }) {
       const action = album ? updateAlbumAsync : createAlbumAsync;
       await dispatch(action(payload)).unwrap();
 
-      // Reset form and close dialog
       setTitle("");
       setDescription("");
       controlledOpen ? onClose?.() : setIsOpen(false);

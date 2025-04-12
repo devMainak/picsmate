@@ -83,15 +83,12 @@ export default function ImageViewer() {
       className="w-full h-screen flex relative bg-black"
       onClick={handleClickOutside}
     >
-      {/* currentImage Container */}
       <div className="flex flex-grow justify-center items-center overflow-hidden">
         <img
           src={currentImage.imageUrl}
           alt={currentImage.name}
           className="max-w-full max-h-full object-contain w-auto h-auto"
         />
-
-        {/* Action Buttons */}
         <div className="absolute top-4 left-4 flex gap-2">
           <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
             <ArrowLeft className="text-white" />
@@ -127,8 +124,6 @@ export default function ImageViewer() {
           </Button>
         </div>
       </div>
-
-      {/* Sidebar for Metadata & Comments */}
       {isSidebarOpen && (
         <div className="w-80 bg-white p-4 overflow-y-auto shadow-lg h-full absolute right-0 top-0">
           <h2 className="text-lg font-semibold text-left">
