@@ -26,7 +26,7 @@ export default function ImageViewer() {
     [images, image._id]
   );
 
-  const isOwner = currentImage.albumId.owner === user._id ? true : false;
+  const isOwner = currentImage.albumId.owner._id === user._id;
 
   const handleCommentSubmit = () => {
     if (comment) {
@@ -141,7 +141,8 @@ export default function ImageViewer() {
             <strong>Album:</strong> {currentImage.albumId.title}
           </p>
           <p className="text-left">
-            <strong>Date:</strong> {currentImage.createdAt}
+            <strong>Date:</strong>{" "}
+            {new Date(currentImage.createdAt).toLocaleDateString()}
           </p>
           <p className="text-left">
             <strong>Size:</strong> {`${currentImage.size} MB`}

@@ -3,19 +3,21 @@ import { Link } from "react-router-dom";
 
 const AlbumLink = ({ album }) => {
   const { images } = useSelector((state) => state.images);
-
-  const albumImages = images.filter((image) => image.albumId._id === album._id);
+  const albumImages = images.filter((img) => img.albumId._id === album._id);
+  const coverImage =
+    albumImages.length > 0 ? albumImages[0].imageUrl : album.coverImage;
 
   return (
-    <div className="py-[5px]">
+    <div className="rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-white">
       <Link to={`/albums/${album._id}`} state={album}>
         <img
-          src={
-            albumImages.length > 0 ? albumImages[0].imageUrl : album.coverImage
-          }
-          className="w-230px h-48 rounded-md"
+          src={coverImage}
+          alt={album.title}
+          className="w-full h-48 object-cover"
         />
-        <p className="text-left max-w-200px">{album.title}</p>
+        <div className="p-2">
+          <p className="text-sm font-medium truncate">{album.title}</p>
+        </div>
       </Link>
     </div>
   );

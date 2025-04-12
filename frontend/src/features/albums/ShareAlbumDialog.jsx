@@ -3,18 +3,16 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useDispatch, useSelector } from "react-redux";
 import { clearAlbumError, shareAlbumAsync } from "./albumsSlice";
 
-const ShareAlbumDialog = ({ albumId }) => {
+const ShareAlbumDialog = ({ albumId, onClose, open }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [localError, setLocalError] = useState(null);
@@ -22,54 +20,67 @@ const ShareAlbumDialog = ({ albumId }) => {
   const dispatch = useDispatch();
   const backendError = useSelector((state) => state.albums.error);
 
+  const controlled = open !== undefined;
+  const dialogOpen = controlled ? open : isOpen;
+
   useEffect(() => {
-    if (isOpen) {
+    if (dialogOpen) {
       dispatch(clearAlbumError());
       setEmail("");
       setLocalError(null);
     }
-  }, [isOpen, dispatch]);
+  }, [dialogOpen, dispatch]);
 
-  const handleAlbumShare = async (e) => {
+  const handleOpenChange = (val) => {
+    if (controlled) {
+      if (!val && onClose) onClose();
+    } else {
+      setIsOpen(val);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!email.trim()) {
+      setLocalError("Enter an email!");
+      return;
+    }
+
     try {
-      if (!email) {
-        setLocalError("Enter an email!");
-        return;
-      }
       await dispatch(shareAlbumAsync({ albumId, email })).unwrap();
-      setIsOpen(false);
-    } catch (err) {
+
+      // Close the dialog
+      if (controlled) {
+        onClose?.();
+      } else {
+        setIsOpen(false);
+      }
+    } catch {
       setLocalError("Failed to share album.");
     }
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button onClick={() => setIsOpen(true)}>Share</Button>
-      </DialogTrigger>
+    <Dialog open={dialogOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Share Album</DialogTitle>
         </DialogHeader>
-        {localError && (
+
+        {(localError || backendError) && (
           <div className="bg-red-100 text-red-700 p-2 rounded-md">
-            {localError}
+            {localError || backendError}
           </div>
         )}
-        {backendError && (
-          <div className="bg-red-100 text-red-700 p-2 rounded-md">
-            {backendError}
-          </div>
-        )}
-        <form onSubmit={handleAlbumShare}>
+
+        <form onSubmit={handleSubmit}>
           <div className="grid gap-4 py-4">
             <div className="grid w-full max-w-sm items-center gap-1.5">
-              <Label htmlFor="title">Add Email to Share</Label>
+              <Label htmlFor="email">Add Email to Share</Label>
               <Input
                 type="email"
-                id="title"
+                id="email"
                 placeholder="Enter a valid email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -78,7 +89,7 @@ const ShareAlbumDialog = ({ albumId }) => {
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit">Share</Button>
+            <Button className="bg-red-600" type="submit">Share</Button>
           </DialogFooter>
         </form>
       </DialogContent>

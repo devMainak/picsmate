@@ -18,9 +18,7 @@ import ImageList from "@/features/images/ImageList";
 import { UploadPictureDialog } from "@/features/images/UploadPictureDialog";
 import { CreateAlbumDialog } from "@/features/albums/CreateAlbumDialog";
 import { DeleteAlbumDialog } from "@/features/albums/DeleteAlbumDialog";
-// import { UploadPictureDialog } from "@/features/images/UploadPictureDialog";
-// import ShareAlbumDialog from "@/features/albums/ShareAlbumDialog";
-// import UpdateAlbumDialog from "@/features/albums/UpdateAlbumDialog";
+import ShareAlbumDialog from "@/features/albums/ShareAlbumDialog";
 
 const AlbumDetails = () => {
   const { state: album } = useLocation();
@@ -103,12 +101,12 @@ const AlbumDetails = () => {
                 album={currentAlbum}
                 open={showUpdate}
                 onClose={() => setShowUpdate(false)}
-                showTriggerButton={false}
               />
             )}
             {showShare && (
               <ShareAlbumDialog
                 albumId={currentAlbum._id}
+                open={showShare}
                 onClose={() => setShowShare(false)}
               />
             )}
