@@ -93,10 +93,14 @@ const albumsSlice = createSlice({
     albums: [],
     loading: false,
     error: null,
+    filter: "all",
   },
   reducers: {
     clearAlbumError: (state) => {
       state.error = null;
+    },
+    setFilter: (state, action) => {
+      state.filter = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -112,7 +116,7 @@ const albumsSlice = createSlice({
     });
     builder.addCase(fetchAlbumsAsync.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.payload.message || "Failed to fetch albums";
+      state.error = action.payload || "Failed to fetch albums";
       state.albums = [];
     });
     // createAlbumAsync promise cases
@@ -139,6 +143,6 @@ const albumsSlice = createSlice({
   },
 });
 
-export const { clearAlbumError } = albumsSlice.actions;
+export const { clearAlbumError, setFilter } = albumsSlice.actions;
 
 export default albumsSlice.reducer;
