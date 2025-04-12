@@ -1,19 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Heart, Trash, Info, ArrowLeft } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  addCommentAsync,
-  addFavouriteImageAsync,
-  deleteImageAsync,
-} from "./imagesSlice";
-import CommentList from "./CommentList";
+import { addFavouriteImageAsync, deleteImageAsync } from "./imagesSlice";
 import { useAuth } from "@/hooks/useAuth";
+import ImageDetailsBar from "./ImageDetailsBar";
 
 export default function ImageViewer() {
-  const [comment, setComment] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,26 +21,6 @@ export default function ImageViewer() {
   );
 
   const isOwner = currentImage.albumId.owner._id === user._id;
-
-  const handleCommentSubmit = () => {
-    if (comment) {
-      const newComment = {
-        owner: {
-          name: user.name,
-          profilePic: user.profilePicture,
-        },
-        comment,
-      };
-      dispatch(
-        addCommentAsync({
-          albumId: currentImage.albumId._id,
-          comment: newComment,
-          imageId: currentImage._id,
-        })
-      );
-      setComment("");
-    }
-  };
 
   const handleClickOutside = (event) => {
     if (
@@ -80,7 +54,7 @@ export default function ImageViewer() {
 
   return (
     <div
-      className="w-full h-screen flex relative bg-black"
+      className="w-full h-screen flex relative bg-zinc-800"
       onClick={handleClickOutside}
     >
       <div className="flex flex-grow justify-center items-center overflow-hidden">
@@ -124,50 +98,7 @@ export default function ImageViewer() {
           </Button>
         </div>
       </div>
-      {isSidebarOpen && (
-        <div className="w-80 bg-white p-4 overflow-y-auto shadow-lg h-full absolute right-0 top-0">
-          <h2 className="text-lg font-semibold text-left">
-            {currentImage.name}
-          </h2>
-          <p className="text-left">
-            <strong>Uploaded By:</strong> {currentImage.albumId.owner.name}
-          </p>
-          <p className="text-left">
-            <strong>Album:</strong> {currentImage.albumId.title}
-          </p>
-          <p className="text-left">
-            <strong>Date:</strong>{" "}
-            {new Date(currentImage.createdAt).toLocaleDateString()}
-          </p>
-          <p className="text-left">
-            <strong>Size:</strong> {`${currentImage.size} MB`}
-          </p>
-          {currentImage.tags.length !== 0 && (
-            <p className="text-left">
-              <strong>Tags:</strong> {currentImage.tags.join(", ")}
-            </p>
-          )}
-
-          <hr />
-          <h3 className="mt-4 text-lg font-semibold">Comments</h3>
-
-          <div className="flex gap-2">
-            <Input
-              type="text"
-              placeholder="Add a comment"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              required
-              className="comment-input"
-            />
-
-            <Button onClick={handleCommentSubmit} className="post-btn">
-              Post
-            </Button>
-          </div>
-          <CommentList comments={currentImage.comments} />
-        </div>
-      )}
+      {isSidebarOpen && <ImageDetailsBar image={currentImage} user={user} />}
     </div>
   );
 }

@@ -32,7 +32,8 @@ export function UploadPictureDialog({ albumId }) {
   const [person, setPerson] = useState("");
   const [tags, setTags] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [localError, setLocalError] = useState(null); // Local error state
+  const [localError, setLocalError] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
   const location = useLocation();
 
   const dispatch = useDispatch();
@@ -77,14 +78,17 @@ export function UploadPictureDialog({ albumId }) {
     e.preventDefault();
     setLocalError(null);
     dispatch(clearError());
+    setIsUploading(true);
 
     if (!image) {
       setLocalError("Please select an image.");
+      setIsUploading(false);
       return;
     }
 
     if (location.pathname === "/photos" && !selectedAlbum) {
       setLocalError("Please select an album.");
+      setIsUploading(false);
       return;
     }
 
@@ -105,6 +109,8 @@ export function UploadPictureDialog({ albumId }) {
       setIsOpen(false);
     } catch (err) {
       setLocalError("Failed to upload image. Please try again.");
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -112,10 +118,10 @@ export function UploadPictureDialog({ albumId }) {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button
-          className="w-12 h-12 p-3 bg-red-600 text-white hover:bg-red-700 hover:scale-105 transition-all duration-150"
+          className="w-12 h-12 p-3 bg-red-600 dark:bg-red-600 text-white hover:bg-red-700 hover:scale-105 transition-all duration-150"
           onClick={() => setIsOpen(true)}
         >
-          <ImagePlus className="!text-[2rem] stroke-[2.5]" />
+          <ImagePlus className="!text-[2rem] stroke-[2.5] dark:text-white" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
@@ -198,8 +204,12 @@ export function UploadPictureDialog({ albumId }) {
             </div>
           </div>
           <DialogFooter>
-            <Button className="bg-red-600" type="submit">
-              Upload
+            <Button
+              className="bg-red-600 dark:bg-red-600 dark:text-white"
+              type="submit"
+              disabled={isUploading}
+            >
+              {isUploading ? "Uploading..." : "Upload"}
             </Button>
           </DialogFooter>
         </form>

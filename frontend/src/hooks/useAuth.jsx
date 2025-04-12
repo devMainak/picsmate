@@ -6,8 +6,10 @@ import {
   verifyAuthAsync,
 } from "@/features/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { useTheme } from "@/contexts/theme-provider";
 
 export const useAuth = () => {
+  const { setTheme } = useTheme();
   const dispatch = useDispatch();
 
   const { user, isAuthenticated, loading, error } = useSelector(
@@ -23,6 +25,7 @@ export const useAuth = () => {
   };
 
   const logout = () => {
+    setTheme("light");
     dispatch(logoutAsync());
   };
 

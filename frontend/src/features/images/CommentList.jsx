@@ -4,7 +4,7 @@ const CommentList = ({ comments }) => {
       {comments.map((c, index) => (
         <div
           key={index}
-          className="p-2 bg-gray-100 rounded-md flex items-start gap-2"
+          className="p-2 bg-gray-100 dark:bg-gray-800 rounded-md flex items-start gap-2"
         >
           <img
             src={c.owner.profilePic}
@@ -12,8 +12,10 @@ const CommentList = ({ comments }) => {
             className="w-8 h-8 rounded-full"
           />
           <div>
-            <p className="font-semibold">{c.owner.name}</p>
-            <p className="text-gray-700">{c.comment}</p>
+            <p className="font-semibold text-black dark:text-white">
+              {c.owner.name}
+            </p>
+            <p className="text-gray-800 dark:text-gray-300">{c.comment}</p>
           </div>
         </div>
       ))}

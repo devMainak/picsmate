@@ -88,7 +88,7 @@ const ShareAlbumDialog = ({ albumId, onClose, open }) => {
             </div>
           </div>
           <DialogFooter>
-            <Button className="bg-red-600" type="submit">
+            <Button className="bg-red-600 dark:bg-red-600 dark:text-white" type="submit">
               Share
             </Button>
           </DialogFooter>

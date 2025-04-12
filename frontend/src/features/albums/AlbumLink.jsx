@@ -8,7 +8,7 @@ const AlbumLink = ({ album }) => {
     albumImages.length > 0 ? albumImages[0].imageUrl : album.coverImage;
 
   return (
-    <div className="rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-white">
+    <div className="rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-white dark:bg-zinc-900">
       <Link to={`/albums/${album._id}`} state={album}>
         <img
           src={coverImage}
@@ -16,7 +16,9 @@ const AlbumLink = ({ album }) => {
           className="w-full h-48 object-cover"
         />
         <div className="p-2">
-          <p className="text-sm font-medium truncate">{album.title}</p>
+          <p className="text-sm font-medium text-black dark:text-white truncate">
+            {album.title}
+          </p>
         </div>
       </Link>
     </div>

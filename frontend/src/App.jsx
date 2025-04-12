@@ -21,7 +21,7 @@ function App() {
               <Route path="/albums" element={<AlbumView />} />
               <Route path="/albums/:albumId" element={<AlbumDetails />} />
               <Route path="/photos/:imageId" element={<ImageViewer />} />
-              <Route path="/photos/favourites" element={<FavouritesView />} />
+              <Route path="/favourites" element={<FavouritesView />} />
             </Route>
           </Route>
         </Routes>

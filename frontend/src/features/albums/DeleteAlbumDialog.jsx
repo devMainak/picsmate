@@ -37,8 +37,8 @@ export function DeleteAlbumDialog({ album, onClose, open }) {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
-          <AlertDialogAction className="bg-red-600" onClick={handleAlbumDelete}>
+          <AlertDialogCancel className="text-red-600 dark:text-red-600" onClick={onClose}>Cancel</AlertDialogCancel>
+          <AlertDialogAction className="bg-red-600 dark:bg-red-600 dark:text-white" onClick={handleAlbumDelete}>
             Continue
           </AlertDialogAction>
         </AlertDialogFooter>

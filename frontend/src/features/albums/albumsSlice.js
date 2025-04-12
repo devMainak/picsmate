@@ -109,7 +109,6 @@ const albumsSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchAlbumsAsync.fulfilled, (state, action) => {
-      console.log(action.payload);
       state.loading = false;
       state.albums =
         action.payload.albums.length === 0 ? [] : action.payload.albums;
