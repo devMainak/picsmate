@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ImagePlus } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -110,7 +111,12 @@ export function UploadPictureDialog({ albumId }) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setIsOpen(true)}>Upload Picture</Button>
+        <Button
+          className="w-12 h-12 p-3 bg-red-600 text-white hover:bg-red-700 hover:scale-105 transition-all duration-150"
+          onClick={() => setIsOpen(true)}
+        >
+          <ImagePlus className="!text-[2rem] stroke-[2.5]" />
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -193,7 +199,9 @@ export function UploadPictureDialog({ albumId }) {
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit">Upload</Button>
+            <Button className="bg-red-600" type="submit">
+              Upload
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

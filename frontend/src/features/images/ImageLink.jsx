@@ -2,15 +2,14 @@ import { Link } from "react-router-dom";
 
 const ImageLink = ({ image }) => {
   return (
-    <div className="py-[5px]">
-      <div>
-        <Link to={`/photos/${image._id}`} state={image}>
-          <img
-            src={image.imageUrl}
-            className="min-w-250px h-48 rounded-md rounded-md"
-          />
-        </Link>
-      </div>
+    <div>
+      <Link to={`/photos/${image._id}`} state={image}>
+        <img
+          src={image.imageUrl}
+          alt="Image"
+          className="w-full h-60 object-cover rounded-sm"
+        />
+      </Link>
     </div>
   );
 };

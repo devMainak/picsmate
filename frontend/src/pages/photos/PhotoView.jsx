@@ -17,7 +17,7 @@ const PhotoView = () => {
     dispatch(fetchAlbumsAsync());
   }, [dispatch]);
 
-  const { images } = useSelector((state) => state.images);
+  const { images, loading } = useSelector((state) => state.images);
   const { user } = useAuth();
 
   const userImages = images.filter(
@@ -36,9 +36,14 @@ const PhotoView = () => {
           <UploadPictureDialog />
         </div>
       </div>
-      <div>
+
+      {loading ? (
+        <div className="flex justify-center items-center h-[60vh]">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-red-200 border-t-red-600"></div>
+        </div>
+      ) : (
         <ImageList images={userImages} />
-      </div>
+      )}
     </div>
   );
 };

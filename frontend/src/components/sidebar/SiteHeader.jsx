@@ -37,7 +37,7 @@ export function SiteHeader() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Gallery</BreadcrumbPage>
+              <BreadcrumbPage>gallery</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
