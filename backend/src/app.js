@@ -8,7 +8,7 @@ const { initializeDatabase } = require("./config/db.connection");
 // applying middlewares
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://picsmate.vercel.app/",
+  "https://picsmate.vercel.app",
 ];
 
 const corsOptions = {
