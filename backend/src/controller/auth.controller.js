@@ -97,6 +97,8 @@ exports.verifyAuth = (req, res) => {
 
 exports.logout = async (req, res) => {
   try {
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.clearCookie("access_token", {
       httpOnly: true,
       secure: isProduction,
