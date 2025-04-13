@@ -1,5 +1,6 @@
 # Files
-.env
+.env.dev
+.env.prod
 
 # Folders
 node_modules/

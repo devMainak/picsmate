@@ -1,15 +1,18 @@
 const User = require("../models/user.model");
 const axios = require("axios");
+const qs = require("qs");
 const validator = require("validator");
 const { createAccessToken } = require("../services/createAccessToken");
 const { setSecureCookie } = require("../services/setSecureCookie");
 
 // Google OAuth implementation
 exports.initiateAuth = (req, res) => {
-  const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=http://localhost:${process.env.PORT}/auth/google/callback&response_type=code&scope=openid email profile&access_type=offline&prompt=select_account`;
+  const redirectUri = `${process.env.OAUTH_REDIRECT_BASE}/auth/google/callback`;
+
+  const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${redirectUri}&response_type=code&scope=openid email profile&access_type=offline&prompt=select_account`;
+
   res.redirect(googleAuthUrl);
 };
-
 exports.authCallback = async (req, res) => {
   const { code } = req.query;
   if (!code) {
@@ -19,15 +22,17 @@ exports.authCallback = async (req, res) => {
   try {
     const tokenResponse = await axios.post(
       "https://oauth2.googleapis.com/token",
-      {
+      qs.stringify({
         client_id: process.env.GOOGLE_CLIENT_ID,
         client_secret: process.env.GOOGLE_CLIENT_SECRET,
         code,
         grant_type: "authorization_code",
-        redirect_uri: `http://localhost:${process.env.PORT}/auth/google/callback`,
-      },
+        redirect_uri: `${process.env.OAUTH_REDIRECT_BASE}/auth/google/callback`,
+      }),
       {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       }
     );
 

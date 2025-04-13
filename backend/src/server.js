@@ -1,5 +1,7 @@
 // server.js
-require("dotenv").config();
+require("dotenv").config({
+  path: process.env.NODE_ENV === "production" ? ".env.prod" : ".env.dev",
+});
 
 const http = require("http");
 const app = require("./app");
