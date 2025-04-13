@@ -99,6 +99,9 @@ exports.logout = async (req, res) => {
   try {
     res.clearCookie("access_token", {
       httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      path: "/",
     });
     return res.status(200).json({ message: "Logout Successful" });
   } catch (error) {
