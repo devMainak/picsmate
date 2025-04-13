@@ -89,13 +89,11 @@ const authSlice = createSlice({
       state.error = null;
     });
     builder.addCase(loginAsync.fulfilled, (state, action) => {
-      console.log(action.payload);
       state.loading = false;
       state.user = action.payload.user;
       state.isAuthenticated = true;
     });
     builder.addCase(loginAsync.rejected, (state, action) => {
-      console.log(action.payload);
       state.loading = false;
       state.isAuthenticated = false;
       state.error = action.payload || "Failed to login user";
