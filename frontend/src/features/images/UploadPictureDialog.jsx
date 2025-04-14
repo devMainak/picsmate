@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearError, uploadImageAsync } from "./imagesSlice";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { fetchAlbumsAsync } from "../albums/albumsSlice";
 
 export function UploadPictureDialog({ albumId }) {
   const [name, setName] = useState("");
@@ -37,14 +38,13 @@ export function UploadPictureDialog({ albumId }) {
   const location = useLocation();
 
   const dispatch = useDispatch();
-  const backendError = useSelector((state) => state.images.error); // Get error from Redux store
-  const { albums } = useSelector((state) => state.albums);
+  const backendError = useSelector((state) => state.images.error);
   const { user } = useAuth();
 
-  let userAlbums;
   useEffect(() => {
     if (isOpen) {
       dispatch(clearError());
+      dispatch(fetchAlbumsAsync());
       setName("");
       setImage(null);
       setImagePreview("");
@@ -52,9 +52,11 @@ export function UploadPictureDialog({ albumId }) {
       setPerson("");
       setTags([]);
       setLocalError(null);
-      userAlbums = albums.filter((album) => album.owner === user._id);
     }
   }, [isOpen, dispatch]);
+
+  const { albums } = useSelector((state) => state.albums);
+  const userAlbums = albums.filter((album) => album.owner === user._id);
 
   const handleFileChange = (e) => {
     const picture = e.target.files[0];
