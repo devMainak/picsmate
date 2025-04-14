@@ -26,7 +26,10 @@ export const useAuth = () => {
 
   const logout = () => {
     setTheme("light");
-    dispatch(logoutAsync());
+    dispatch(logoutAsync()).then(() => {
+      localStorage.removeItem("access_token");
+      navigate("/login");
+    });
   };
 
   const verifyAuth = () => {

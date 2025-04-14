@@ -38,7 +38,7 @@ exports.authCallback = async (req, res) => {
     );
 
     const googleAccessToken = tokenResponse.data.access_token;
-    // Fetch user info from Google
+
     const userInfoResponse = await axios.get(
       "https://www.googleapis.com/oauth2/v3/userinfo",
       {
@@ -59,13 +59,14 @@ exports.authCallback = async (req, res) => {
       await user.save();
     }
 
-    const accessToken = createAccessToken(user);
-    setSecureCookie(res, accessToken);
+    const jwtAccessToken = createAccessToken(user);
 
-    return res.redirect(`https://picsmate.vercel.app/photos`);
+    return res.redirect(
+      `https://picsmate.vercel.app/auth/callback?token=${jwtAccessToken}`
+    );
   } catch (error) {
     console.error("Error during authentication:", error);
-    res.status(500).json({ message: "Authentication failed" });
+    return res.redirect("https://picsmate.vercel.app/login?error=auth_failed");
   }
 };
 
