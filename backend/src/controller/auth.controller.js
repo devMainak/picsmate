@@ -13,6 +13,7 @@ exports.initiateAuth = (req, res) => {
 
   res.redirect(googleAuthUrl);
 };
+
 exports.authCallback = async (req, res) => {
   const { code } = req.query;
   if (!code) {

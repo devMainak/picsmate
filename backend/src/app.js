@@ -6,20 +6,10 @@ const cookieParser = require("cookie-parser");
 const { initializeDatabase } = require("./config/db.connection");
 
 // applying middlewares
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://picsmate.vercel.app",
-];
+const allowedOrigins = ["http://localhost:5173", "https://picsmate.vercel.app"];
 
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: allowedOrigins,
   credentials: true,
 };
 
