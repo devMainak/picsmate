@@ -17,7 +17,7 @@ function App() {
         <Route path="/" element={<Login />} />
 
         {/* Add the route for Google OAuth redirect handler */}
-        <Route path="/google/callback" element={<GoogleCallbackHandler />} />
+        <Route path="/auth/callback" element={<GoogleCallbackHandler />} />
 
         <Route element={<ProtectedRoute />}>
           <Route element={<SidebarLayout />}>
