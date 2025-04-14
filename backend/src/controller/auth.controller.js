@@ -62,7 +62,7 @@ exports.authCallback = async (req, res) => {
     const jwtAccessToken = createAccessToken(user);
 
     return res.redirect(
-      `https://picsmate.vercel.app/auth/callback?token=${jwtAccessToken}`
+      `https://picsmate.vercel.app/google/callback?token=${jwtAccessToken}`
     );
   } catch (error) {
     console.error("Error during authentication:", error);
