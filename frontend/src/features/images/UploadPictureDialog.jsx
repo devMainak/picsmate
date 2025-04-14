@@ -41,8 +41,7 @@ export function UploadPictureDialog({ albumId }) {
   const { albums } = useSelector((state) => state.albums);
   const { user } = useAuth();
 
-  const userAlbums = albums.filter((album) => album.owner === user._id);
-
+  let userAlbums;
   useEffect(() => {
     if (isOpen) {
       dispatch(clearError());
@@ -53,6 +52,7 @@ export function UploadPictureDialog({ albumId }) {
       setPerson("");
       setTags([]);
       setLocalError(null);
+      userAlbums = albums.filter((album) => album.owner === user._id);
     }
   }, [isOpen, dispatch]);
 
