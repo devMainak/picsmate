@@ -16,10 +16,6 @@ const PhotoView = () => {
     }
   }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(fetchAlbumsAsync());
-  }, []);
-
   const { images, loading } = useSelector((state) => state.images);
   const { user } = useAuth();
 
