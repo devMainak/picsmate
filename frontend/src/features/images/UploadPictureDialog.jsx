@@ -55,11 +55,13 @@ export function UploadPictureDialog({ albumId }) {
   }, [isOpen, dispatch]);
 
   useEffect(() => {
-    dispatch(fetchAlbumsAsync());
+    dispatch(fetchAlbumsAsync(user));
   }, []);
 
   const { albums } = useSelector((state) => state.albums);
-  const userAlbums = albums.filter((album) => album.owner === user._id);
+  const userAlbums = albums.filter(
+    (album) => album.owner === user._id || album.owner?._id === user._id
+  );
 
   const handleFileChange = (e) => {
     const picture = e.target.files[0];
@@ -170,7 +172,9 @@ export function UploadPictureDialog({ albumId }) {
                   </SelectTrigger>
                   <SelectContent>
                     {userAlbums.map((album) => (
-                      <SelectItem value={album._id}>{album.title}</SelectItem>
+                      <SelectItem key={album._id} value={album._id}>
+                        {album.title}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
