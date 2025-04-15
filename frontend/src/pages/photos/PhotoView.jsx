@@ -14,8 +14,11 @@ const PhotoView = () => {
     if (!searchMode) {
       dispatch(fetchImagesAsync());
     }
-    dispatch(fetchAlbumsAsync());
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchAlbumsAsync());
+  }, []);
 
   const { images, loading } = useSelector((state) => state.images);
   const { user } = useAuth();
