@@ -44,7 +44,6 @@ export function UploadPictureDialog({ albumId }) {
   useEffect(() => {
     if (isOpen) {
       dispatch(clearError());
-      dispatch(fetchAlbumsAsync());
       setName("");
       setImage(null);
       setImagePreview("");
@@ -54,6 +53,10 @@ export function UploadPictureDialog({ albumId }) {
       setLocalError(null);
     }
   }, [isOpen, dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchAlbumsAsync());
+  });
 
   const { albums } = useSelector((state) => state.albums);
   const userAlbums = albums.filter((album) => album.owner === user._id);
