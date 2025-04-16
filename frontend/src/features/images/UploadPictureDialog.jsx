@@ -55,8 +55,10 @@ export function UploadPictureDialog({ albumId }) {
   }, [isOpen, dispatch]);
 
   useEffect(() => {
-    dispatch(fetchAlbumsAsync(user));
-  }, []);
+    if (user) {
+      dispatch(fetchAlbumsAsync(user));
+    }
+  }, [user, dispatch]);
 
   const { albums } = useSelector((state) => state.albums);
   const userAlbums = albums.filter(
