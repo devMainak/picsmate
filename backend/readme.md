@@ -1,4 +1,4 @@
-# 📸 Image Gallery Backend API
+# 📸 Picsmate Backend API
 
 This is the backend server for the Picsmate application. It provides RESTful APIs for authentication, user management, albums, and image handling.
 
@@ -6,7 +6,7 @@ This is the backend server for the Picsmate application. It provides RESTful API
 
 - 🔐 User authentication (Google oAuth2)
 - 📁 Album creation, editing, sharing and deletion
-- 🖼️ Uploading and managing images in albums, commenting
+- 🖼️ Uploading with cloudinary and multer and managing images in albums, commenting
 
 ## 🛠️ Tech Stack
 
