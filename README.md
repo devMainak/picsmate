@@ -1,4 +1,4 @@
-# 📸 PicsMate
+# 📸 Picsmate
 
 A modern full-stack photo album manager — create albums, upload and tag images, explore photos, and manage everything in a sleek, responsive UI.
 
