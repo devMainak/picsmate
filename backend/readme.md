@@ -4,9 +4,11 @@ This is the backend server for the Picsmate application. It provides RESTful API
 
 ## 🚀 Features
 
-- 🔐 User authentication (Google oAuth2)
-- 📁 Album creation, editing, sharing and deletion
-- 🖼️ Uploading with cloudinary and multer and managing images in albums, commenting
+- 🔐 **Google oAuth Authorization**: User authentication (Google oAuth2 & JWT)
+- 📁 **Album Crud**: Album creation, editing, sharing and deletion
+- 🖼️ **Images & Interactivity**: Uploading with cloudinary and multer and managing images in albums, commenting
+- 🔒 **Authorization Middleware**: Route protection based on user access.
+- 🌐 **RESTful APIs**: Standardized, scalable routes for frontend integration.
 
 ## 🛠️ Tech Stack
 
