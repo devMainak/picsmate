@@ -2,7 +2,6 @@
 
 A modern full-stack photo album manager — create albums, upload and tag images, explore photos, and manage everything in a sleek, responsive UI.
 
-## ![banner](https://picsum.photos/1200/300?grayscale&blur=2)
 
 ## ✨ Tech Stack
 
@@ -35,6 +34,27 @@ A modern full-stack photo album manager — create albums, upload and tag images
 - 🛡️ **Secure Uploads** – Multer and validation in place
 - 🧠 **Smart UI** – Built with accessibility and responsiveness in mind
 
+---
+
+## 🌟 Screenshots
+
+### **Signup**
+![Signup Page](./frontend/public/Signup.png)
+
+### **Photos**
+![Photos](./frontend/public/Photos.png)
+
+### **Albums**
+![Albums](./frontend/public/Albums.png)
+
+### **Upload Picture**
+![Upload Picture](./frontend/public/UploadPicture.png)
+
+### **Image View**
+![Image View](./frontend/public/ImageView.png)
+
+### **Favourite**
+![Favourite](./frontend/public/Favourite.png)
 ---
 
 ## 🧪 Getting Started
