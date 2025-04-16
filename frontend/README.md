@@ -69,6 +69,6 @@ A modern full-stack photo album manager — create albums, upload and tag images
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/picsmate.git
+git clone https://github.com/devMainak/picsmate.git
 cd picsmate
 ```
