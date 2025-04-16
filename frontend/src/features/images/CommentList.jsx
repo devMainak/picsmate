@@ -12,10 +12,10 @@ const CommentList = ({ comments }) => {
             className="w-8 h-8 rounded-full"
           />
           <div>
-            <p className="font-semibold text-black dark:text-white">
+            <p className="font-semibold text-black text-left dark:text-white">
               {c.owner.name}
             </p>
-            <p className="text-gray-800 dark:text-gray-300">{c.comment}</p>
+            <p className="text-gray-800 dark:text-gray-300 text-left">{c.comment}</p>
           </div>
         </div>
       ))}
