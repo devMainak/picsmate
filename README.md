@@ -66,14 +66,19 @@ A modern full-stack photo album manager — create albums, upload and tag images
 - Cloudinary account
 - Google OAuth credentials
 
-### .env variables
+## 🔐 Environment Variables
 
-#### Frontend -
+### 🌐 Frontend (`.env`)
+
+```env
 VITE_WEB_SERVER_BASE_URL=https://backend-base-url
 VITE_GOOGLE_CLIENT_ID=your_google_client_id
 VITE_BACKEND_PORT=backend_port
+```
 
-#### Backend - 
+### 🖥️ Backend (`.env`)
+
+ ```env
 NODE_ENV=your_env
 PORT=backend_port
 MONGODB=your_mongodb_connection_string
@@ -89,7 +94,7 @@ OAUTH_REDIRECT_BASE=deployed_backend_uri
 CLOUDINARY_API_SECRET=your_cloudianry_api_secret
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_NAME=your_cloudinary_api_name
-
+```
 ### 1. Clone the repository
 
 ```bash
