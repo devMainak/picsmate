@@ -98,6 +98,6 @@ CLOUDINARY_API_NAME=your_cloudinary_api_name
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/picsmate.git
+git clone https://github.com/devMainak/picsmate.git
 cd picsmate
 ```
