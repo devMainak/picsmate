@@ -1,11 +1,18 @@
 import ImageList from "@/features/images/ImageList";
+import { useAuth } from "@/hooks/useAuth";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 
 const FavouritesView = () => {
+  const { user } = useAuth();
   const { images } = useSelector((state) => state.images);
+  const userImages = images.filter(
+    (image) =>
+      user._id === image.albumId.owner._id ||
+      image.albumId.accessList.includes(user.email)
+  );
   const favouriteImages = useMemo(
-    () => images.filter((image) => image.isFavourite),
+    () => userImages.filter((image) => image.isFavourite),
     [images]
   );
   return (
